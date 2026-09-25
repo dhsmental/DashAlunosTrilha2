@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard dos Alunos do Curso de Direitos Humanos e Saúde Mental</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        
+        .table-container th { 
+            position: sticky; 
+            top: 0; 
+            z-index: 10; 
+            background-color: #1e293b; 
+        }
+        
+        #graficos, #termometro, #sintese-ebook, #tabela-respostas {
+            scroll-margin-top: 100px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #0f172a; 
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #334155; 
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #475569; 
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 h-full flex flex-col md:flex-row overflow-hidden">
+
+    <aside class="w-full md:w-64 bg-slate-900 border-r border-slate-800 flex flex-col justify-between p-6 shrink-0 z-40 md:h-full overflow-y-auto hidden md:flex">
+        <div>
+            <div class="flex items-center space-x-3 mb-8">
+                <div class="w-10 h-10 rounded-xl overflow-hidden bg-indigo-500/20 flex items-center justify-center shadow-lg border border-indigo-500/30 shrink-0 text-indigo-400">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+                <div class="overflow-hidden">
+                    <h1 class="font-bold text-sm text-white leading-tight">Direitos Humanos e Saúde Mental</h1>
+                    <p class="text-[11px] text-slate-400">Dashboard Alunos v1.0</p>
+                </div>
+            </div>
+
+            <nav class="space-y-1.5" id="desktopNav">
+                <a href="#graficos" data-target="graficos" class="nav-link flex items-center space-x-3 px-4 py-3 bg-indigo-600/10 text-indigo-400 border border-indigo-500/20 rounded-xl font-medium transition">
+                    <i class="fa-solid fa-chart-pie w-5 text-center"></i>
+                    <span>Indicadores</span>
+                </a>
+                <a href="#termometro" data-target="termometro" class="nav-link flex items-center space-x-3 px-4 py-3 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 rounded-xl font-medium transition">
+                    <i class="fa-solid fa-fire w-5 text-center"></i>
+                    <span>Termômetro Temático</span>
+                </a>
+                <a href="#sintese-ebook" data-target="sintese-ebook" class="nav-link flex items-center space-x-3 px-4 py-3 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 rounded-xl font-medium transition">
+                    <i class="fa-solid fa-book-open w-5 text-center"></i>
+                    <span>Síntese Qualitativa</span>
+                </a>
+                <a href="#tabela-respostas" data-target="tabela-respostas" class="nav-link flex items-center space-x-3 px-4 py-3 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 rounded-xl font-medium transition">
+                    <i class="fa-solid fa-comments w-5 text-center"></i>
+                    <span>Respostas Anônimas</span>
+                </a>
+            </nav>
+        </div>
+
+        <div class="my-6 flex flex-col items-center justify-center">
+            <a href="https://www.instagram.com/educa_em_dh_saudemental/" target="_blank" rel="noopener noreferrer" class="w-16 h-16 rounded-full border-2 border-slate-700 hover:border-indigo-400 shadow-md flex items-center justify-center bg-slate-800 hover:bg-slate-700 transition-all duration-300">
+                <i class="fa-brands fa-instagram text-2xl text-slate-300 hover:text-indigo-300"></i>
+            </a>
+            <span class="text-[10px] text-slate-500 mt-2">@educa_em_dh_saudemental</span>
+        </div>
+
+        <div class="pt-4 border-t border-slate-800">
+            <div class="flex items-center space-x-3 bg-slate-800/40 p-3 rounded-xl border border-slate-700/50">
+                <div class="w-10 h-10 rounded-full overflow-hidden bg-slate-900 border border-slate-700/50 flex items-center justify-center shrink-0">
+                    <i class="fa-solid fa-database text-slate-400"></i>
+                </div>
+                <div class="overflow-hidden min-w-0 flex-1 flex flex-col justify-center">
+                    <p class="text-xs font-semibold text-white leading-tight break-words">Secretaria de Dados</p>
+                    <p class="text-[11px] text-slate-400 truncate text-left">DHSM</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <div class="md:hidden bg-slate-900 border-b border-slate-800 p-4 flex justify-between items-center sticky top-0 z-50">
+        <div class="flex items-center space-x-2">
+             <i class="fa-solid fa-graduation-cap text-indigo-400"></i>
+             <h1 class="font-bold text-sm text-white leading-tight">DHSM</h1>
+        </div>
+        <button id="mobileMenuBtn" class="text-slate-300 hover:text-white">
+            <i class="fa-solid fa-bars text-xl"></i>
+        </button>
+    </div>
+
+    <div id="mobileMenu" class="fixed inset-0 bg-slate-950/95 z-40 hidden flex-col pt-20 px-6 backdrop-blur-sm">
+        <nav class="space-y-4" id="mobileNav">
+             <a href="#graficos" data-target="graficos" class="mobile-nav-link block px-4 py-3 bg-indigo-600/10 text-indigo-400 border border-indigo-500/20 rounded-xl font-medium text-center">Indicadores</a>
+             <a href="#termometro" data-target="termometro" class="mobile-nav-link block px-4 py-3 text-slate-400 hover:bg-slate-800/50 rounded-xl font-medium text-center">Termômetro</a>
+             <a href="#sintese-ebook" data-target="sintese-ebook" class="mobile-nav-link block px-4 py-3 text-slate-400 hover:bg-slate-800/50 rounded-xl font-medium text-center">Síntese Qualitativa</a>
+             <a href="#tabela-respostas" data-target="tabela-respostas" class="mobile-nav-link block px-4 py-3 text-slate-400 hover:bg-slate-800/50 rounded-xl font-medium text-center">Respostas Anônimas</a>
+        </nav>
+        <button id="closeMobileMenu" class="mt-8 text-slate-400 p-2 border border-slate-700 rounded-full mx-auto self-center">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    </div>
+
+    <main class="flex-1 flex flex-col h-full overflow-y-auto custom-scrollbar relative scroll-smooth" id="mainScrollContainer">
+        
+        <header class="bg-slate-900/80 backdrop-blur-md border-b border-slate-800 px-6 py-5 flex flex-col items-center justify-center text-center sticky top-0 z-30 hidden md:flex">
+            <div>
+                <h2 class="text-xl sm:text-2xl font-bold text-white tracking-tight">Análise Integrada de Expectativas dos Cursistas</h2>
+                <p class="text-xs text-slate-400 mt-1">Análise das respostas extraídas do formulário inicial</p>
+            </div>
+        </header>
+
+        <div class="p-6 space-y-8 max-w-7xl w-full mx-auto">
+            
+            <div id="graficos" class="scroll-mt-28">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                    <div class="bg-slate-900/50 border border-slate-800/80 rounded-2xl p-5 shadow-sm hover:border-slate-700 transition">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-sm font-medium text-slate-400">Total de Respostas</span>
+                            <div class="bg-indigo-500/10 text-indigo-400 p-2.5 rounded-xl border border-indigo-500/20">
+                                <i class="fa-solid fa-users"></i>
+                            </div>
+                        </div>
+                        <div class="flex items-baseline justify-between">
+                            <h3 class="text-2xl font-bold text-white">599</h3>
+                            <span class="text-[10px] font-semibold text-indigo-400 bg-indigo-500/10 px-2 py-0.5 rounded-full">Analisadas</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-900/50 border border-slate-800/80 rounded-2xl p-5 shadow-sm hover:border-slate-700 transition">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-sm font-medium text-slate-400">Busca por Formação</span>
+                            <div class="bg-emerald-500/10 text-emerald-400 p-2.5 rounded-xl border border-emerald-500/20">
+                                <i class="fa-solid fa-book-open-reader"></i>
+                            </div>
+                        </div>
+                        <div class="flex items-baseline justify-between">
+                            <h3 class="text-2xl font-bold text-white">42%</h3>
+                            <span class="text-[10px] font-semibold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full">Prática Pedagógica</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-900/50 border border-slate-800/80 rounded-2xl p-5 shadow-sm hover:border-slate-700 transition">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-sm font-medium text-slate-400">Foco em Inclusão</span>
+                            <div class="bg-amber-500/10 text-amber-400 p-2.5 rounded-xl border border-amber-500/20">
+                                <i class="fa-solid fa-handshake-angle"></i>
+                            </div>
+                        </div>
+                        <div class="flex items-baseline justify-between">
+                            <h3 class="text-2xl font-bold text-white">35%</h3>
+                            <span class="text-[10px] font-semibold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-full">Direitos Humanos</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-900/50 border border-slate-800/80 rounded-2xl p-5 shadow-sm hover:border-slate-700 transition">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-sm font-medium text-slate-400">Preocupação c/ Saúde</span>
+                            <div class="bg-rose-500/10 text-rose-400 p-2.5 rounded-xl border border-rose-500/20">
+                                <i class="fa-solid fa-brain"></i>
+                            </div>
+                        </div>
+                        <div class="flex items-baseline justify-between">
+                            <h3 class="text-2xl font-bold text-white">23%</h3>
+                            <span class="text-[10px] font-semibold text-rose-400 bg-rose-500/10 px-2 py-0.5 rounded-full">Saúde Mental</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-2 bg-slate-900/50 border border-slate-800/80 rounded-2xl p-6 shadow-lg flex flex-col">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+                            <div>
+                                <h3 class="text-lg font-bold text-white">Temas Centrais nas Expectativas</h3>
+                                <p class="text-xs text-slate-400">Principais categorias temáticas extraídas dos relatos</p>
+                            </div>
+                        </div>
+                        <div class="relative flex-1 w-full min-h-[300px]">
+                            <canvas id="indicatorsChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-900/50 border border-indigo-500/30 rounded-2xl p-6 shadow-xl flex flex-col justify-between relative overflow-hidden">
+                        <div class="absolute -right-10 -bottom-10 w-32 h-32 bg-indigo-500/5 rounded-full blur-2xl pointer-events-none"></div>
+                        <div>
+                            <div class="flex items-center space-x-2 text-indigo-400 font-semibold text-sm mb-3">
+                                <i class="fa-solid fa-chart-line"></i>
+                                <h4>Análise Dinâmica</h4>
+                            </div>
+                            <div id="hoverAnalysisContent" class="space-y-4">
+                                <div class="p-4 bg-slate-800/40 rounded-xl border border-slate-700/60 min-h-[120px]">
+                                    <h5 class="text-white font-bold text-sm mb-2" id="analysisTitle">Passe o mouse no gráfico</h5>
+                                    <p class="text-xs text-slate-300 leading-relaxed font-normal" id="analysisDescription">
+                                        Detalhes sobre as demandas dos cursistas aparecerão aqui.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-slate-800 text-xs text-slate-400 flex items-center justify-between">
+                            <span>Status</span>
+                            <span class="text-emerald-400 font-medium"><i class="fa-solid fa-circle-check"></i> Interativo</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="termometro" class="bg-slate-900/50 border border-slate-800/80 rounded-2xl p-6 shadow-lg scroll-mt-28">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                    <div>
+                        <h3 class="text-lg font-bold text-white"><i class="fa-solid fa-fire text-amber-400 mr-2"></i>Termômetro de Desafios Profissionais</h3>
+                        <p class="text-xs text-slate-400">Principais receios e obstáculos citados pelos educadores</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <div class="space-y-5">
+                        <div>
+                            <div class="flex justify-between text-xs font-semibold text-slate-300 mb-1.5">
+                                <span>Sobrecarga e Esgotamento (Burnout)</span>
+                                <span class="text-rose-400">Forte Ocorrência</span>
+                            </div>
+                            <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden border border-slate-700/50">
+                                <div class="bg-gradient-to-r from-rose-600 to-rose-400 h-full rounded-full" style="width: 85%"></div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between text-xs font-semibold text-slate-300 mb-1.5">
+                                <span>Desvalorização Profissional / Salarial</span>
+                                <span class="text-amber-400">Relevante</span>
+                            </div>
+                            <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden border border-slate-700/50">
+                                <div class="bg-gradient-to-r from-amber-600 to-amber-400 h-full rounded-full" style="width: 65%"></div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between text-xs font-semibold text-slate-300 mb-1.5">
+                                <span>Violência e Indisciplina Escolar</span>
+                                <span class="text-purple-400">Moderado a Forte</span>
+                            </div>
+                            <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden border border-slate-700/50">
+                                <div class="bg-gradient-to-r from-purple-600 to-purple-400 h-full rounded-full" style="width: 55%"></div>
+                            </div>
+                        </div>
+
+                         <div>
+                            <div class="flex justify-between text-xs font-semibold text-slate-300 mb-1.5">
+                                <span>Desafios com Novas Tecnologias/IA</span>
+                                <span class="text-indigo-400">Emergente</span>
+                            </div>
+                            <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden border border-slate-700/50">
+                                <div class="bg-gradient-to-r from-indigo-600 to-indigo-400 h-full rounded-full" style="width: 40%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-800/30 p-5 rounded-xl border border-slate-700/50">
+                        <h4 class="text-sm font-bold text-white mb-3">Síntese do Termômetro</h4>
+                        <p class="text-xs text-slate-300 leading-relaxed mb-3">
+                            A análise dos relatos demonstra uma forte preocupação com a <strong>saúde mental dos próprios educadores</strong>, frequentemente citando esgotamento, sobrecarga de demandas burocráticas e a necessidade urgente de práticas de autocuidado.
+                        </p>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            Além disso, o medo de estagnação e o desafio de lidar com gerações hiperconectadas e com a Inteligência Artificial surgem como motivadores centrais para a busca de formação continuada neste curso.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="sintese-ebook" class="bg-slate-900/50 border border-slate-800/80 rounded-2xl p-6 shadow-lg scroll-mt-28">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                    <div class="flex items-center space-x-3">
+                        <div class="bg-purple-600/10 text-purple-400 p-2.5 rounded-xl border border-purple-500/20">
+                            <i class="fa-solid fa-quote-left"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-white">Vozes dos Cursistas</h3>
+                            <p class="text-xs text-slate-400">Destaques qualitativos sobre expectativas e medos</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+                    <div class="bg-slate-800/40 p-4 rounded-xl border border-slate-700/50 flex flex-col justify-between">
+                        <div class="space-y-2 mb-4">
+                            <span class="text-[10px] uppercase font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">Prática Humanizada</span>
+                            <p class="text-xs text-slate-200 italic leading-relaxed">
+                                "Compreende a docência como um percurso de permanente construção e humanidade, unindo conhecimento e escuta, e enxerga a formação continuada e o equilíbrio com o autocuidado como essenciais..."
+                            </p>
+                        </div>
+                        <div class="pt-2 border-t border-slate-700/40 text-[10px] text-slate-400">Reflexão sobre Docência</div>
+                    </div>
+
+                    <div class="bg-slate-800/40 p-4 rounded-xl border border-slate-700/50 flex flex-col justify-between">
+                        <div class="space-y-2 mb-4">
+                            <span class="text-[10px] uppercase font-bold text-indigo-400 bg-indigo-500/10 px-2 py-0.5 rounded">Saúde Mental Docente</span>
+                            <p class="text-xs text-slate-200 italic leading-relaxed">
+                                "Clama por uma revolução na educação e melhorias estruturais urgentes para combater o desinteresse estudantil e o esgotamento dos professores."
+                            </p>
+                        </div>
+                        <div class="pt-2 border-t border-slate-700/40 text-[10px] text-slate-400">Alerta de Esgotamento</div>
+                    </div>
+
+                    <div class="bg-slate-800/40 p-4 rounded-xl border border-slate-700/50 flex flex-col justify-between">
+                        <div class="space-y-2 mb-4">
+                            <span class="text-[10px] uppercase font-bold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded">Inclusão & Diversidade</span>
+                            <p class="text-xs text-slate-200 italic leading-relaxed">
+                                "Deseja atuar com alunos com altas habilidades acolhendo suas intensidades e vulnerabilidades, criando espaços livres da pressão por produtividade e do isolamento."
+                            </p>
+                        </div>
+                        <div class="pt-2 border-t border-slate-700/40 text-[10px] text-slate-400">Foco em Necessidades Específicas</div>
+                    </div>
+
+                    <div class="bg-slate-800/40 p-4 rounded-xl border border-slate-700/50 flex flex-col justify-between">
+                        <div class="space-y-2 mb-4">
+                            <span class="text-[10px] uppercase font-bold text-rose-400 bg-rose-500/10 px-2 py-0.5 rounded">Impacto Tecnológico</span>
+                            <p class="text-xs text-slate-200 italic leading-relaxed">
+                                "Reflete sobre os dilemas da docência diante da precarização e da inteligência artificial, desejando formar mentes críticas, livres e humanas."
+                            </p>
+                        </div>
+                        <div class="pt-2 border-t border-slate-700/40 text-[10px] text-slate-400">Desafios Contemporâneos</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tabela-respostas" class="bg-slate-900/50 border border-slate-800/80 rounded-2xl p-6 shadow-lg mb-10 flex flex-col h-[600px] scroll-mt-28">
+                
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4 shrink-0">
+                    <div>
+                        <h3 class="text-lg font-bold text-white">Resumo Detalhado das Expectativas (Anonimizado)</h3>
+                        <p class="text-xs text-slate-400">Total de registros processados e analisados</p>
+                    </div>
+                    <div class="relative">
+                        <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Buscar resposta..." class="bg-slate-800 border border-slate-700 text-white text-xs rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 p-2.5 outline-none transition-colors">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <i class="fa-solid fa-magnifying-glass text-slate-400"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-container border border-slate-800 rounded-xl overflow-y-auto custom-scrollbar flex-1 relative">
+                    <table class="w-full text-left text-sm text-slate-300" id="cursistTable">
+                        <thead class="bg-slate-800 text-xs uppercase text-slate-400 sticky top-0 z-10 shadow-md">
+                            <tr>
+                                <th class="px-4 py-3 font-semibold tracking-wider">Perfil do Cursista</th>
+                                <th class="px-4 py-3 font-semibold tracking-wider">Síntese da Resposta</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-800/50" id="tableBody">
+                            <!-- Data injected via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile Menu Logic
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const closeMobileMenu = document.getElementById('closeMobileMenu');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const mobileLinks = document.querySelectorAll('.mobile-nav-link');
+
+            if(mobileMenuBtn && closeMobileMenu && mobileMenu) {
+                mobileMenuBtn.addEventListener('click', () => {
+                    mobileMenu.classList.remove('hidden');
+                    mobileMenu.classList.add('flex');
+                });
+
+                closeMobileMenu.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                    mobileMenu.classList.remove('flex');
+                });
+
+                mobileLinks.forEach(link => {
+                    link.addEventListener('click', () => {
+                        mobileMenu.classList.add('hidden');
+                        mobileMenu.classList.remove('flex');
+                    });
+                });
+            }
+
+            // --- Navigation Active State Sync (Click & Scroll via IntersectionObserver) ---
+            const navLinks = document.querySelectorAll('.nav-link, .mobile-nav-link');
+            const sections = ['graficos', 'termometro', 'sintese-ebook', 'tabela-respostas'];
+
+            // Function to update active styles on navigation items
+            function setActiveNavLink(targetId) {
+                navLinks.forEach(link => {
+                    const target = link.getAttribute('data-target');
+                    if (target === targetId) {
+                        // Apply active styling
+                        if (link.classList.contains('mobile-nav-link')) {
+                            link.className = "mobile-nav-link block px-4 py-3 bg-indigo-600/10 text-indigo-400 border border-indigo-500/20 rounded-xl font-medium text-center";
+                        } else {
+                            link.className = "nav-link flex items-center space-x-3 px-4 py-3 bg-indigo-600/10 text-indigo-400 border border-indigo-500/20 rounded-xl font-medium transition";
+                        }
+                    } else {
+                        // Apply inactive styling
+                        if (link.classList.contains('mobile-nav-link')) {
+                            link.className = "mobile-nav-link block px-4 py-3 text-slate-400 hover:bg-slate-800/50 rounded-xl font-medium text-center";
+                        } else {
+                            link.className = "nav-link flex items-center space-x-3 px-4 py-3 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 rounded-xl font-medium transition";
+                        }
+                    }
+                });
+            }
+
+            // Click event listeners to immediately set active class on click
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    const targetId = this.getAttribute('data-target');
+                    if (targetId) {
+                        setActiveNavLink(targetId);
+                    }
+                });
+            });
+
+            // IntersectionObserver configuration to track scroll position inside the scrollable container
+            const mainContainer = document.getElementById('mainScrollContainer');
+            const observerOptions = {
+                root: mainContainer,
+                rootMargin: '-20% 0px -60% 0px',
+                threshold: 0
+            };
+
+            const observerCallback = (entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.getAttribute('id');
+                        setActiveNavLink(id);
+                    }
+                });
+            };
+
+            const observer = new IntersectionObserver(observerCallback, observerOptions);
+            sections.forEach(secId => {
+                const el = document.getElementById(secId);
+                if (el) observer.observe(el);
+            });
+
+            // Chart Data
+            const chartDataDetailed = {
+                "Formação e Prática": {
+                    description: "Busca constante por aperfeiçoamento, metodologias ativas, ferramentas para lidar com a sala de aula e desejo de continuar aprendendo para impactar alunos.",
+                    tags: ["Prática Pedagógica", "Formação Continuada", "Didática"]
+                },
+                "Inclusão e Acolhimento": {
+                    description: "Forte ênfase na escuta sensível, respeito à diversidade (autismo, altas habilidades, questões étnico-raciais) e criação de espaços seguros na escola.",
+                    tags: ["Direitos Humanos", "Educação Especial", "Empatia"]
+                },
+                "Saúde Mental": {
+                    description: "Preocupação latente com o próprio bem-estar, relatos de sobrecarga, burnout, busca por equilíbrio entre vida pessoal e trabalho.",
+                    tags: ["Prevenção Burnout", "Qualidade de Vida", "Gestão de Emoções"]
+                },
+                "Estabilidade/Carreira": {
+                    description: "Objetivos práticos envolvendo aprovação em concursos públicos, segurança financeira, conclusão de mestrado/doutorado e plano de aposentadoria.",
+                    tags: ["Concurso Público", "Pós-graduação", "Ascensão Profissional"]
+                }
+            };
+
+            const ctx = document.getElementById('indicatorsChart');
+            if (ctx) {
+                const indicatorsChart = new Chart(ctx.getContext('2d'), {
+                    type: 'bar',
+                    data: {
+                        labels: ['Formação e Prática', 'Inclusão e Acolhimento', 'Saúde Mental', 'Estabilidade/Carreira'],
+                        datasets: [{
+                            label: 'Frequência Temática Relativa (%)',
+                            data: [42, 35, 23, 18],
+                            backgroundColor: [
+                                'rgba(16, 185, 129, 0.7)',
+                                'rgba(245, 158, 11, 0.7)',
+                                'rgba(244, 63, 94, 0.7)',
+                                'rgba(99, 102, 241, 0.7)'
+                            ],
+                            borderColor: [
+                                'rgb(16, 185, 129)',
+                                'rgb(245, 158, 11)',
+                                'rgb(244, 63, 94)',
+                                'rgb(99, 102, 241)'
+                            ],
+                            borderWidth: 1,
+                            borderRadius: 4,
+                            barPercentage: 0.6
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                backgroundColor: 'rgba(15, 23, 42, 0.95)',
+                                titleFont: { family: 'Inter', size: 13, weight: 'bold' },
+                                bodyFont: { family: 'Inter', size: 12 },
+                                padding: 10,
+                                cornerRadius: 6,
+                                borderColor: 'rgba(51, 65, 85, 0.5)',
+                                borderWidth: 1
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: { display: false },
+                                ticks: { color: '#94a3b8', font: { family: 'Inter', size: 12 } }
+                            },
+                            y: {
+                                display: true,
+                                grid: { color: 'rgba(51, 65, 85, 0.2)' },
+                                ticks: { color: '#94a3b8', font: { family: 'Inter', size: 10 } },
+                                beginAtZero: true
+                            }
+                        },
+                        onHover: (event, chartElement) => {
+                            if (chartElement.length > 0) {
+                                const index = chartElement[0].index;
+                                const label = indicatorsChart.data.labels[index];
+                                updateAnalysisPanel(label);
+                            }
+                        }
+                    }
+                });
+            }
+
+            function updateAnalysisPanel(key) {
+                const data = chartDataDetailed[key];
+                const titleEl = document.getElementById('analysisTitle');
+                const descEl = document.getElementById('analysisDescription');
+                
+                if (data && titleEl && descEl) {
+                    titleEl.innerText = key;
+                    let tagsHtml = data.tags.map(tag => `<span class="inline-block bg-slate-700/50 text-slate-300 text-[10px] px-2 py-1 rounded mt-2 mr-1">${tag}</span>`).join('');
+                    descEl.innerHTML = data.description + '<br>' + tagsHtml;
+                }
+            }
+
+            // --- Data Population for Table (Anonymized) ---
+            const rawData = [
+                `Movida por uma sede constante de conhecimento, vê a profissão de assistente social como a realização de um sonho de justiça, buscando transformar realidades e fazer a diferença apesar dos desafios.`,
+                `Compreende a docência como um percurso de permanente construção e humanidade, unindo conhecimento e escuta, e enxerga a formação continuada e o equilíbrio com o autocuidado como essenciais para transformar a realidade.`,
+                `Professora desde 2015, deseja continuar aprendendo, valorizando os territórios e histórias dos alunos, e busca inspiração no autoconhecimento diário para manter o amor pela educação.`,
+                `Orientadora educacional que busca consolidar uma trajetória ética e de compromisso social, almejando novas formações para fortalecer a escola pública e o bem-estar dos estudantes.`,
+                `Pedagoga e estudante de História, tem o sonho de ser aprovada em um concurso público em Santa Maria/RS, cursar Mestrado em Educação Antirracista e ver a família unida e bem-sucedida.`,
+                `Perto da aposentadoria, planeja ressignificar sua trajetória canalizando sua bagagem para projetos comunitários que priorizem a autonomia, o bem-estar e a escuta.`,
+                `Acredita que a carreira é construída com estudo e coragem e reforça, inspirada por Paulo Freire, a importância vital de manter viva a utopia e a recusa à acomodação.`,
+                `Sonha com a valorização da docência e busca formações contínuas para promover uma prática humana, inclusiva e acolhedora, com forte atenção à saúde mental.`,
+                `Psicóloga escolar e estudante de Pedagogia, busca uma atuação rizomática que integre a escuta das infâncias à natureza e ao brincar, combatendo amarras burocráticas.`,
+                `Fonoaudióloga na gestão pública, busca conciliar autonomia ética com o descanso e a família, planejando ingressar no mestrado e fortalecer sua atuação profissional.`,
+                `Com 24 anos na educação, busca transformar vidas por meio do conhecimento e da compreensão sensível do contexto social de seus alunos, tendo como principal medo o de falhar como educadora.`,
+                `Deseja atuar com alunos com altas habilidades acolhendo suas intensidades e vulnerabilidades, criando espaços livres da pressão por produtividade e do isolamento.`,
+                `Busca continuar crescendo na área educacional com foco em práticas inclusivas, transformando inseguranças diante das mudanças em motivação para qualificação contínua.`,
+                `Enfermeira e pedagoga, deseja ampliar sua voz institucional em programas de mediação de conflitos e combate ao racismo na rede pública de São Paulo para atuar na prevenção.`,
+                `Foca sua atuação no letramento em saúde, na atividade física e nos esportes como pilares para o desenvolvimento humano integral, integrando os aprendizados do curso à prática em São Paulo.`,
+                `Sonha com uma escola inclusiva e com a valorização financeira e institucional de sua categoria, buscando autonomia para combater a evasão e a violência.`,
+                `Professor comprometido com a transformação social, busca aprimorar sua prática docente integrando ciência, direitos humanos e saúde mental na escola.`,
+                `Aos 58 anos e motivado pela persistência das desigualdades, deseja utilizar sua formação para orientar jovens para o trabalho e ajudar idosos a conhecerem seus direitos.`,
+                `Vislumbra o sucesso profissional na concretização de ideias e projetos que transformem ambientes e gerem resultados duraderos, validando sua capacidade técnica.`,
+                `Estudante de medicina, sonha em exercer a profissão de forma humana e empática, mantendo o equilíbrio emocional e sem se cobrar excessivamente pelas expectativas externas.`,
+                `Psicóloga escolar da Secretaria de Educação, busca promover saúde mental e relações saudáveis na rede de ensino, unindo a atuação institucional ao desenvolvimento clínico.`,
+                `Professora focada em valorizar a realidade de cada criança, busca superar os desafios da profissão por meio de estudos constantes e práticas inclusivas.`,
+                `Busca estabilidade por meio de concursos públicos e almeja atuar com ética, humildade e foco na promoção do bem-estar biopsicossocial e da saúde mental da população.`,
+                `Professora que busca aprofundar estudos em Educação, Direitos Humanos e Relações Étnico-Raciais para articular saberes escolares com a memória, a cultura e o território.`,
+                `Define sucesso como viver com tranquilidade, cuidar da família e atuar com responsabilidade, buscando a curto prazo a qualificação profissional e a organização do tempo.`,
+                `Assistente técnico-pedagógica que busca evoluir continuamente na função, fortalecendo a organização escolar e a construção de um ambiente acolhedor e inclusivo.`,
+                `Professora contratada que busca aprovação em concurso público para conquistar estabilidade e dar continuidade aos projetos desenvolvidos com os alunos.`,
+                `Busca consolidar sua transição para uma nova área com autonomia e segurança financeira, encarando falhas como oportunidades de aprendizado contínuo.`,
+                `Sonha com uma escola que respeite as diferenças, acolha as individualidades sem julgamentos e faça do aluno um agente ativo de sua trajetória.`,
+                `Destaca a importância de proporcionar momentos de diálogo e reflexão para que os estudantes expressem seus objetivos e construam seus futuros.`,
+                `Almeja maior valorização e respeito profissional, pretendendo cursar novas pós-graduações na área da educação para impactar positivamente a vida dos alunos.`,
+                `Pretende unir sua formação em Filosofia à Terapia Ocupacional para articular educação, cuidado e pensamento crítico em sua prática profissional.`,
+                `Enfrentando desafios de saúde crônica e perdas familiares, encontra na família, nos animais de estimação e na escuta sensível o suporte para continuar fazendo o bem.`,
+                `Estudante de Psicologia que busca concluir a graduação com ética e sensibilidade, unindo o sucesso profissional à construção de uma vida afetiva e familiar sólida.`,
+                `Com mais de 25 anos dedicados à educação e atuando na direção escolar, deseja consolidar uma gestão que inspire, acolha e transforme a realidade da comunidade.`,
+                `Estudante de Serviço Social que busca estabilidade profissional e qualificação para atuar na garantia de direitos e no impacto positivo comunitário.`,
+                `Persistente diante das frustrações e recomeços, utiliza os erros como impulsionadores para buscar o melhor em sua trajetória.`,
+                `Vice-diretora apaixonada pela educação infantil, planeja iniciar graduação e especialização em Psicologia Infantil para auxiliar no suporte emocional de crianças e famílias.`,
+                `Busca fortalecer sua atuação em projetos sociais e ambientais, com planos de ingressar no mestrado para transformar a realidade das comunidades.`,
+                `Defensora do Bem Viver e dos povos originários, busca combater as desigualdades sociais e a crise climática por meio de pesquisas acadêmicas.`,
+                `Professora comprometida em continuar estudando para aprimorar sua acolhida aos alunos e ser reconhecida pela diferença positiva que faz na educação.`,
+                `Professora de matemática que busca ir além da transmissão de conteúdos, fazendo da escola um espaço de acolhimento e respeito à diversidade dos alunos.`,
+                `Busca estabilidade e independência financeira através dos estudos, utilizando a qualificação como ferramenta para lidar com as incertezas da vida.`,
+                `Estudante de Psicologia que busca uma formação ética e com propósito, aprendendo a lidar com as incertezas do futuro de forma autêntica.`,
+                `Professora que valoriza a formação continuada e os Direitos Humanos, sonhando em expandir sua atuação e inspirar novos educadores.`,
+                `Sonha em consolidar a educação como instrumento de transformação social, pautada no diálogo, na inclusão e no respeito às diferenças.`,
+                `Professora de história em Sergipe que busca transformar salas de aula em espaços de emancipação, combate ao silenciamento e defesa da diversidade.`,
+                `Professora que busca conciliar o aprendizado diário com o acolhimento aos alunos, sonhando em olhar para sua trajetória com orgulho e senso de dever cumprido.`,
+                `Reflete sobre os dilemas da docência diante da precarização e da inteligência artificial, desejando formar mentes críticas, livres e humanas.`,
+                `Psicóloga no sistema socioeducativo que busca transicionar sua prática para o atendimento ao autismo e à inclusão neurodivergente, priorizando sua saúde mental e ética.`,
+                `Próxima da aposentadoria, deseja concluir seus últimos anos em sala de aula com a sensação de dever cumprido e transicionar para projetos comunitários.`,
+                `Busca adquirir mais conhecimentos e superar inseguranças pessoais para exercer seu trabalho com maior segurança e competência técnica.`,
+                `Busca refúgio e equilíbrio emocional no contato com a natureza, plantio e autocuidado, entendendo que a essência da vida vai além das cobranças urbanas.`,
+                `Assistente social que busca a efetivação em concurso público para obter estabilidade e aprimorar suas intervenções na área da educação.`,
+                `Assistente social com o desejo de obter a licenciatura em Geografia, buscando pautar sua atuação profissional na ética, integridade e acolhimento.`,
+                `Busca ampliar qualificações para atuar na garantia de direitos e na inclusão social, enfrentando os desafios profissionais com coragem e esperança.`,
+                `Deseja integrar suas experiências no Direito, Administração Pública e Educação em uma atuação humanizada, mantendo viva a curiosidade e a busca por aprendizado.`,
+                `Professor de Física que busca unir ciência, pesquisa e ensino para despertar a curiosidade dos estudantes e transformar suas realidades.`,
+                `Busca qualificar sua mediação de conflitos escolares por meio dos Direitos Humanos, enxergando o conflito como oportunidade de aprendizado e transformação.`,
+                `Auxiliar de educação que busca superar o medo da escassez de tempo para prestar novos concursos e se tornar docente, formando crianças autônomas.`,
+                `Psicóloga escolar em transição para a especialização em saúde mental e TCC, buscando conciliar o aprimoramento técnico com o apoio familiar.`,
+                `Professora da rede pública que busca valorização financeira e estabilidade para a aposentadoria, valorizando o impacto positivo deixado em seus alunos.`,
+                `Almeja parcerias entre família e escola focadas em saúde mental, buscando proteger a vida da comunidade escolar sem esgotar sua saúde emocional.`,
+                `Defende a inseparabilidade entre educação e saúde mental, argumentando que o acolhimento emocional é pré-requisito fundamental para a aprendizagem.`,
+                `Assistente educacional que busca constante aprimoramento profissional e equilíbrio de vida por meio do lazer e da saúde física, apesar de históricos de saúde complexos.`,
+                `Defensora dos direitos humanos e da saúde mental, busca construir uma vida equilibrada pautada na empatia e no cuidado mútuo.`,
+                `Professora da rede pública que orgulha-se da trajetória dos filhos e busca conciliar inovação tecnológica, projetos significativos e estabilidade.`,
+                `Psicóloga que almeja a valorização salarial e o reconhecimento social da profissão como ferramenta acessível de suporte e escuta.`,
+                `Busca evoluir na vida pessoal e profissional com humildade, dedicação e acolhimento humano, valorizando o impacto transformador do curso.`,
+                `Professora da Educação Infantil que busca constant aperfeiçoamento pedagógico para tornar o ambiente escolar mais significativo e acolhedor.`,
+                `Técnica pedagógica que busca aprimorar suas competências para contribuir de forma qualificada com a gestão da educação em Ouro Branco/RN.`,
+                `Busca alinhar aspirações individuais com impacto comunitário real, desenvolvendo soluções éticas e integrativas para os desafios cotidianos.`,
+                `Almeja ampliar sua formação humana em direitos humanos e educação, transformando inseguranças em motivação para o cuidado e respeito às pessoas.`,
+                `Psicóloga que busca o reconhecimento e a valorização da sua profissão, almejando estabilidade e oportunidades para promover mudanças significativas.`,
+                `Enfermeira que busca consolidar estabilidade e especialização na área da saúde, exercendo a profissão com dedicação e humanização.`,
+                `Almeja atuar no suporte à educação e à democratização da informação, equilibrando empatia e clareza na resolução de problemas.`,
+                `Professora que busca evoluir continuamente na promoção de práticas inclusivas e pensamento crítico, superando os desafios estruturais da educação.`,
+                `Deseja construir uma carreira pautada na ética e na transformação de realidades, transformando seus medos em combustível para o crescimento.`,
+                `Estudante de Geografia que busca concluir sua graduação para atuar na educação e construir uma trajetória de orgulho e propósito.`,
+                `Sonha com um ambiente escolar humanizado e saudável, onde a empatia e a saúde mental permeiem as relações cotidianas.`,
+                `Busca investir em sua formação para alcançar estabilidade e reconhecimento profissional, contribuindo positivamente para a sociedade.`,
+                `Educador que busca aprimorar suas práticas pedagógicas e desenvolver materiais acessíveis, transformando as incertezas da profissão em combustível para estudar.`,
+                `Próxima da aposentadoria, deseja encerrar sua carreira com dignidade e profissionalismo, combatendo o esgotamento coletivo e promovendo os direitos das crianças.`,
+                `Almeja consolidar sua referência profissional e abrir seu próprio consultório clínico, conciliando autonomia financeira, saúde mental e qualidade de vida.`,
+                `Busca avançar na formação acadêmica e conquistar estabilidade e reconhecimento, superando inseguranças por meio da qualificação constante.`,
+                `Advogada que sonha em exercer uma advocacia acolhedora, ética e corajosa, servindo como instrumento legítimo de proteção e justiça social.`,
+                `Deseja continuar aprendendo e desenvolvendo novos projetos na educação, cultivando orgulho de uma trajetória construída com propósito.`,
+                `Professora e pesquisadora que busca independência financeira e equilíbrio entre a carreira acadêmica e o tempo dedicado à família.`,
+                `Pretende concluir o doutorado e buscar novas oportunidades de crescimento profissional por meio de dedicação e aprimoramento contínuo.`,
+                `Profissional da educação que encontrou novo equilíbrio após mudar de ambiente de trabalho, traçando como meta futura ingressar no ensino superior.`,
+                `Planeja iniciar o mestrado, aprender LIBRAS e conquistar um cargo público na área educacional, combatendo a acomodação profissional.`,
+                `Busca aprimorar conhecimentos em gestão pública para superar escassez de recursos e construir um legado de transformação social na educação.`,
+                `Psicóloga que busca articular sua atuação entre a psicologia escolar, saúde mental e direitos humanos, almejando cargos públicos e inserção acadêmica.`,
+                `Servidora pública que busca crescer profissionalmente através da aquisição de novos conhecimentos voltados à educação e à sociedade.`,
+                `Professora municipal que busca conciliar a redução gradual de carga horária rumo à aposentadoria com o suporte emocional aos familiares.`,
+                `Almeja construir uma carreira significativa e de aprendizado contínuo, transformando os obstáculos cotidianos em resiliência.`,
+                `Em transição da sala de aula para a psicologia e a orientação educacional, busca exercer uma escuta ativa e ética com os estudantes.`,
+                `Orientadora pedagógica que enfatiza a importância de proteger os sonhos dos alunos e cultivar os direitos humanos como base para a cultura de paz na escola.`,
+                `Próxima da aposentadoria na educação, planeja cursar Terapia Ocupacional, mudar de cidade e dedicar-se à corrida de rua para preservar sua saúde mental.`,
+                `Valoriza a reflexão crítica do passado para projetar um futuro justo e coerente, priorizando trocas afetivas e transformações pessoais.`,
+                `Deseja aprimorar conhecimentos voltados ao acolhimento de pessoas, buscando estabilidade e reconhecimento profissional a médio prazo.`,
+                `Professora com longa trajetória que busca a qualificação contínua para preservar a qualidade de seu trabalho docente e envelhecer com integridade mental.`,
+                `Professora que busca investir em capacitação continuada para utilizar recursos criativos e promover uma educação mais inclusiva.`,
+                `Deseja deixar sementes duradouras de afeto, empatia e respeito na vida das crianças, educando com o coração.`,
+                `Defensora dos direitos e da justiça social, busca potencializar sua formação continuada preservando sua saúde, seus afetos e seus valores democráticos.`,
+                `Professora que busca ampliar sua formação com um mestrado em Educação, visando fortalecer estratégias de combate à evasão escolar.`,
+                `Almeja conduzir seus alunos rumo a uma consciência ecológica, humana e justa, pautada no respeito e na empatia mútua.`,
+                `Supera medos do passado com orgulho de sua autonomia, compreendendo que as quedas fortaleceram sua identidade atual.`,
+                `Educadora da rede municipal de São Paulo que busca aprimorar práticas humanizadas de acolhimento às diferenças e promoção dos direitos humanos.`,
+                `Psicóloga escolar do Programa Acolher que busca lutar contra modelos engessados e construir redes de afeto e proteção na escola pública de Sergipe.`,
+                `Com 27 anos de dedicação na educação, sonha em se qualificar, obter melhor remuneração e aposentar-se com o sentimento de dever cumprido.`,
+                `Educadora que busca aprimorar sua prática pedagógica para oferecer oportunidades inclusivas e transformadoras aos estudantes.`,
+                `Professor e supervisor que busca aprofundar conhecimentos em Direitos Humanos e Saúde Mental para combater a sobrecarga emocional e melhorar o ambiente escolar.`,
+                `Almeja independência profissional, estudos no exterior e oportunidades de crescimento que valorizem sua dedicação e coragem para mudar.`,
+                `Vislumbra uma trajetória pautada na responsabilidade e no amor pela educação, superando o medo do fracasso através do aprendizado contínuo.`,
+                `Assistente social que aponta a urgência do reconhecimento pleno da categoria, combate à precarização, garantia de piso salarial e foco na saúde mental.`,
+                `Almeja uma carreira estável e recompensadora onde possa aplicar suas habilidades práticas e evoluir com as novas ferramentas da sua área.`,
+                `Professora que valoriza o tempo, a essência e o papel transformador da educação nas mudanças sociais.`,
+                `Militante da Educação Especial em Brasília, busca fortalecer as políticas públicas de inclusão e direitos humanos para garantir que nenhum aluno seja deixado para trás.`,
+                `Busca consolidar sua atuação em Psicologia e Saúde Mental, utilizando os Direitos Humanos para promover inclusão e acolhimento na sociedade.`,
+                `Enfermeira e militante política que busca consolidar uma vida tranquila e sustentável em contato com a natureza, exercendo sua profissão com olhar diferenciado.`,
+                `Busca estabilidade profissional, aprimoramento contínuo e oportunidades para utilizar sua experiência na ajuda ao próximo.`,
+                `Assistente social e analista educacional que busca consolidar metodologias de intervenção integrando direitos humanos e saúde mental.`,
+                `Deseja recuperar a leveza e a liberdade pessoal através da arte e da dança, superando a pressão excessiva do trabalho estritamente voltado à sobrevivência.`,
+                `Professor com dupla carreira e passagens pela administração pública, busca utilizar sua bagagem multifacetada para novas oportunidades de impacto.`,
+                `Gestora escolar que busca consolidar comunidades de afeto focadas em saúde mental e direitos humanos, superando o medo da falência estrutural.`,
+                `Professora da primeira infância que deseja ensinar com afeto, criatividade e longevidade saudável rumo à aposentadoria.`,
+                `Descontente com a mercantilização e plataformização da educação em São Paulo, busca novas experiências profissionais para fugir do esgotamento em acúmulo de cargos.`,
+                `Busca equilibrar estabilidade financeira, auto-desenvolvimento, saúde física e mental e tempo de qualidade para a família.`,
+                `Dedicada e persistente, busca superar o receio diante da dominância tecnológica e da exposição digital excessiva no mercado de trabalho.`,
+                `Investe em formação e persistência para consolidar uma carreira na Engenharia Civil com orgulho de sua trajetória.`,
+                `Professora focada em cursar doutorado e concurso federal, buscando especializar-se em direitos da infância, educação antirracista e cultura de paz.`,
+                `Professora e orientadora que busca ampliar sua formação em educação inclusiva e do campo, valorizando pequenas experiências significativas no cotidiano escolar.`,
+                `Professor de geografia que utiliza ferramentas lúdicas e o conceito de território para estimular o pensamento crítico e combater a alienação digital dos estudantes.`,
+                `Almeja evolução técnica e sensibilidade cultural para atuar como assistente automatizada eficiente, eliminando tarefas repetitivas e expandindo a criatividade humana.`,
+                `Gestora escolar que busca consolidar uma escola acolhedora e democrática, defendendo sua dignidade contra o assédio moral e a desvalorização.`,
+                `Busca conquistar novas oportunidades e estabilidade profissional através dos estudos, transformando o medo da estagnação em motivação.`,
+                `Busca unir capacidade técnica e impacto social em sua carreira, pretendendo se tornar referência ética e colaborativa em sua área de atuação.`,
+                `Estudante de engenharia e sistemas que busca dominar desenvolvimento de software para criar soluções digitais eficientes com total autonomia.`,
+                `Professor aprovado em concurso que planeja cursar doutorado para aprofundar sua formação acadêmica e continuar transformando a educação.`,
+                `Assistente social de 50 anos com dupla jornada que almeja cursar mestrado, doutorado e passar em concurso do Tribunal de Justiça, mantendo o equilíbrio e a saúde integral.`,
+                `Busca ampliar conhecimentos para atuar na inclusão e no acolhimento de estudantes, transformando inseguranças em oportunidades de avanço profissional.`,
+                `Professora que prioriza a qualidade no exercício da função e valoriza momentos de leitura e viagens em família para preservar seu bem-estar.`,
+                `Busca unir sua formação em Geografia e experiência em vendas para atuar de forma ética e inovadora em prol de transformações sociais e ambientais.`,
+                `Busca estabilidade financeira e aprovação em concurso público para superar as pressões do sistema e cuidar de sua família com segurança.`,
+                `Almeja crescimento profissional com preservação da qualidade de vida, buscando estabilidade e equilíbrio entre o trabalho e o bem-estar pessoal.`,
+                `Educador que busca aprimorar práticas pedagógicas significativas para transformar a escola em um espaço acolhedor e de protagonismo estudantil.`,
+                `Educadora que deseja continuar aprendendo para fazer a diferença na vida das crianças através de um trabalho pautado no amor e respeito.`,
+                `Busca superar medos de fracasso através dos estudos e dedicação, almejando uma carreira que permita crescer e ajudar o próximo.`,
+                `Professor de Ciências e Biologia que busca consolidar sua carreira na educação por meio do aprimoramento contínuo e da dedicação.`,
+                `Planeja iniciar doutorado em gestão educacional, tornar-se fluente em inglês e espanhol e lecionar no ensino superior nos próximos cinco anos.`,
+                `Professora que sonha com turmas menores, autonomia pedagógica e valorização financeira da categoria, combatendo o esgotamento profissional (Burnout).`,
+                `Deseja continuar inspirando alunos e transmitindo conhecimento para transformar vidas através da educação.`,
+                `Clama por uma revolução na educação e melhorias estruturais urgentes para combater o desinteresse estudantil e o esgotamento dos professores.`,
+                `Professora de filosofia que vê o educar como aprendizado contínuo, unindo amor, propósito e perseverança na sala de aula.`,
+                `Almeja independência financeira e conclusão de formação por meio de dedicação e superação de medos, construindo uma carreira com propósito e dignidade.`,
+                `Busca integrar impacto social e Direitos Humanos em sua atuação cotidiana, superando limitações estruturais com escuta e reinvenção.`,
+                `Deseja construir uma trajetória ética e humanizada pautada nos direitos humanos, transformando experiências em aprendizado constante.`,
+                `Destaca a importância dos aprendizados sobre Direitos Humanos e saúde mental para aprimorar sua dedicação profissional e respeito ao próximo.`,
+                `Almeja sucesso profissional através de aprimoramento contínuo, troca de experiências e contribuição ativa em seu ambiente de trabalho.`,
+                `Pretende combater o medo do envelhecimento mantendo seu propósito de ajudar os outros a florescerem em um mundo livre de preconceitos.`,
+                `Almeja conquistas materiais e espirituais na estrada da vida, valorizando o esforço e a superação de obstáculos na busca por seus objetivos.`,
+                `Professor de física que almeja efetivação na rede pública e combate à substituição da interação humana pela inteligência artificial fria.`,
+                `Busca equilíbrio, autenticidade e paz na vida pessoal, alinhando suas ambições profissionais a um propósito de vida humanizado.`,
+                `Busca oportunidades de realização e estabilidade na área educacional, superando medos e investindo continuamente na própria formação.`,
+                `Almeja uma trajetória com propósito, aprendizado contínuo e equilíbrio entre realização profissional, qualidade de vida e respeito comunitário.`,
+                `Valoriza o presente e a humanidade nas relações profissionais, defendendo o tempo de autocuidado e a escuta compassiva contra o imediatismo tecnológico.`,
+                `Busca carreira sólida baseada em aprendizado contínuo e ascensão a maiores responsabilidades na área educacional.`,
+                `Deseja conquistar uma profissão realizadora que permita auxiliar o próximo, encarando as dificuldades do caminho como aprendizado.`,
+                `Almeja aprofundar estudos para tornar sua prática instrumentos de escuta, acolhimento e transformação social fundamentados nos direitos humanos.`,
+                `Professora com múltiplas graduações e especializações que defende a valorização docente como premissa para a evolução crítica da sociedade.`,
+                `Superou perdas familiares e dores pessoais através da conclusão da faculdade de pedagogia, motivando-se a continuar avançando com determinação.`,
+                `Almeja estabilidade financeira, união familiar, capacitação permanente e um ambiente de trabalho saudável livre de crises alérgicas graves.`,
+                `Dedicada à educação especial, busca novas especializações e prioritariamente a preservação da própria saúde mental para sustentar seu engajamento pedagógico.`,
+                `Educadora focada em concluir formações e desenvolver projetos para uma aprendizagem acolhedora, inclusiva e significativa.`,
+                `Próxima da aposentadoria em três anos, planeja manter-se ativa com estudos, pilates, viagens e cuidado com os pais, vivendo plenamente o presente.`,
+                `Alerta para a exclusão digital e os perigos de plataformas inacessíveis e inteligências artificiais excludentes para as populações vulneráveis.`,
+                `Deseja continuar formando vínculos com os estudantes, respeitando suas diferenças e promovendo o bem-estar coletivo por meio da educação.`,
+                `Professora com mais de duas décadas de experiência que planeja reduzir sua jornada e atuar na área de fonoaudiologia para suprir necessidades locais.`,
+                `Diretora escolar com múltiplas graduações que apoia o filho em medicina, sonhando em desfrutar de uma aposentadoria com saúde mental e física plena.`,
+                `Prioriza a presença na criação dos filhos e a busca por estabilidade financeira moderada, entendendo que cada fase da vida possui seu tempo certo.`,
+                `Deseja construir um currículo sólido com foco em auxiliar o próximo, obtendo desempenho favorável no curso atual.`,
+                `Aos 53 anos, desafia o tempo buscando nova graduação ou mestrado para redefinir seu futuro profissional com base em sua vasta bagagem de vida.`,
+                `Almeja um ambiente escolar harmonioso e uma aposentadoria tranquila, precavendo-se contra o esgotamento emocional e o adoecimento profissional.`,
+                `Busca consolidar uma carreira de impacto social genuíno, fugindo da estagnação e alinhando metas de aprimoramento contínuo ao seu território.`,
+                `Destaca o papel de assistência técnica inteligente na simplificação de conceitos complexos e no suporte prático ao aprendizado e à programação.`,
+                `Almeja crescer dentro de sua empresa adquirindo novos conhecimentos, conquistar casa própria e carro para dar estabilidade à sua filha.`,
+                `Professor que cursa Direito e mestrado em educação, buscando unir saberes jurídicos e pedagógicos para atuar na justiça social e direitos humanos.`,
+                `Auxiliar de sala que encontrou sua verdadeira vocação na educação infantil após iniciar trabalhando como babá, com objetivo de se formar em docência.`,
+                `Prioriza a realização de sonhos possíveis, mantendo equilíbrio psicológico e valorizando o aprendizado histórico para superar dificuldades funcionais.`,
+                `Focada no crescimento na educação infantil, busca aprimorar práticas acolhedoras e superar limites com resiliência e dedicação contínua.`,
+                `Gestora educacional comprometida com direitos humanos e inclusão, buscando fortalecer políticas públicas e valorizar profissionais e estudantes.`,
+                `Almeja desenvolver-se com empatia e humildade para exercer uma psicologia humana, acolhedora e com claro propósito de transformação social.`,
+                `Psicóloga que busca enxergar seus medos e desafios como etapas de aprimoramento e consolidação de uma prática pautada no respeito e acolhimento.`,
+                `Professora que busca aperfeiçoamento constante na educação e equilíbrio saudável entre as exigências da profissão e o tempo dedicado à família.`,
+                `Dedicada à educação especial e inclusiva, busca parear Direitos Humanos e práticas humanizadas, superando a falta de recursos com resiliência.`,
+                `Educadora apaixonada que enxerga a sala de aula como um espaço de esperança para cultivar valores e formar cidadãos críticos e solidários.`,
+                `Pedagoga que busca estabilidade, reconhecimento e superação de inseguranças por meio do estudo constante para transformar vidas na educação.`,
+                `Almeja transicionar para um cargo técnico de 30 horas para resgatar sua saúde física e mental após anos de exaustão na Educação Básica.`,
+                `Reflete criticamente sobre a responsabilidade de moldar o desenvolvimento alheio e busca estratégias para ampliar seu tempo de presença na vida familiar.`,
+                `Psicólogo com vivência em CAPS e na educação, pauta sua trajetória na defesa intransigente dos direitos humanos e do acolhimento às vulnerabilidades.`,
+                `Reconhece sua trajetória como um rizoma flexível, capaz de gerar conexões e novos caminhos imprevisíveis ao longo da vida.`,
+                `Gestor escolar que valoriza o impacto transformador de suas ações, buscando equilibrar crescimento profissional e qualidade de vida familiar.`,
+                `Pedagogo e especialista que combate o etarismo no mercado de trabalho, desejando superar o desemprego para deixar um legado de inclusão social.`,
+                `Estudante de Direito que atua na Estratégia Saúde da Família, unindo sua vivência com populações em vulnerabilidade à defesa dos Direitos Humanos.`,
+                `Busca estabilidade financeira e realização pessoal através da dedicação aos estudos e à busca por constante aprimoramento profissional.`,
+                `Luta com dedicação para conquistar a estabilidade como professora efetiva, contribuindo com paixão para a vida de seus alunos.`,
+                `Deseja continuar crescendo na educação com foco na troca significativa com os alunos, buscando equilíbrio entre a vida profissional e pessoal.`,
+                `Inspirada por uma professora de infância, atua com dedicação na docência, buscando ver seus alunos realizarem os próprios objetivos.`,
+                `Almeja consolidar uma prática docente comprometida com o respeito às diferenças e à inovação pedagógica humanizada.`,
+                `Busca integrar a saúde mental ao cotidiano educacional e clínico, fomentando pensamento crítico e empatia nas relações institucionais.`,
+                `Almeja uma atuação profissional comprometida com a saúde e a educação, concluindo ciclos de aprendizado para ajudar pessoas em sofrimento psíquico.`,
+                `Pesquisadora e orientadora educacional que utiliza o conceito de dororidade para transformar vivências de preconceito em práticas antirracistas na escola.`,
+                `Estudante universitária que busca superar medos e consolidar sua carreira na educação com propósito e reconhecimento positivo.`,
+                `Busca unir realização pessoal e propósito na orientação de carreiras e desenvolvimento humano, superando inércias por meio da qualificação constante.`,
+                `Anseia por se tornar uma educadora mais eficiente cujas práticas reflitam valores humanos sólidos no trato com os estudantes.`,
+                `Professora que alimenta o desejo de vencer a autossabotagem para ser aprovada em um concurso público federal e garantir estabilidade financeira.`,
+                `Busca especialização em Atendimento Educacional Especializado (AEE) para atender com competência a complexidade dos alunos com transtornos de aprendizagem.`,
+                `Almeja sensibilizar servidores públicos para que ofereçam um atendimento humanizado, digno e respeitoso às pessoas em situação de vulnerabilidade.`,
+                `Defende um ambiente profissional fundamentado na colaboração, no diálogo e no respeito mútuo para a superação de desafios coletivos.`,
+                `Psicóloga aos 57 anos que planeja abrir sua própria clínica após a aposentadoria, transformando a maturidade em pilar de impacto profissional.`,
+                `Realizada após 34 anos de dedicação à docência, deseja guardar belas lembranças de sua contribuição na formação de múltiplas gerações.`,
+                `Psicóloga que almeja construir uma carreira internacional com foco em saúde mental, vivenciando diferentes culturas e perspectivas globais.`,
+                `Gestora escolar que busca cultivar a serenidade, o diálogo e a escuta ativa para transformar a escola em um ambiente de florescimento coletivo.`,
+                `Almeja crescer profissionalmente promovendo inclusão, direitos humanos e dignidade através de um compromisso ético e sensível.`,
+                `Destaca a importância da atualização contínua e dinâmica nas políticas públicas em que atua diretamente.`,
+                `Recém-formada em Pedagogia após 20 anos afastada da escola, deseja atuar na educação infantil e na implementação de normas de saúde e segurança (NR-1).`,
+                `Estudante de psicologia que busca superar a autossupervisão limitante para atuar com segurança e sucesso no mercado de saúde mental em expansão.`,
+                `Educadora dedicada que busca promover oportunidades igualitárias de aprendizado, utilizando a educação como ferramenta de transformação de vidas.`,
+                `Busca se aprimorar continuamente na área educacional para promover escolas mais inclusivas, respeitosas e acolhedoras à diversidade.`,
+                `Busca conquistar a casa própria e readequar sua rotina profissional para garantir maior tempo de convivência de qualidade com a família.`,
+                `Busca estabilidade financeira e profissional através da persistência frente aos estudos, conciliando uma rotina corrida com projetos de apoio familiar.`,
+                `Realizado com suas conquistas na educação, almeja a efetivação em cargo público e a continuidade do seu crescimento profissional.`,
+                `Busca construir uma carreira com propósito social e estabilidade, avaliando caminhos que correspondam aos seus valores genuínos.`,
+                `Almeja estabilidade e reconhecimento profissional através do estudo contínuo, mantendo sua essência intacta diante das incertezas do mercado.`,
+                `Psicólogo que busca consolidar uma atuação ética e de impacto social, superando a burocracia exaustiva com planejamento e escuta sensível.`,
+                `Educadora especial que mantém a esperança de resgatar valores humanos e desvencilhar-se de excessos burocráticos no AEE.`,
+                `Professora que valoriza os recomeços de sua trajetória, buscando unir competências em administração e educação em prol de projetos sociais.`,
+                `Busca aprofundar estudos em Direitos Humanos e Saúde Mental para compreender melhor as pessoas e atuar com respeito e acolhimento.`,
+                `Professora focada em auxiliar seus alunos do 9º ano a ingressarem em escolas técnicas e universidades, combatendo o risco de exclusão social.`,
+                `Pesquisadora e educadora da EJA no contexto prisional que busca aprimorar suas práticas sociais comprometidas com os direitos humanos.`,
+                `Professora recém-formada e aprovada em concurso público que planeja cursar mestrado e doutorado para progredir na carreira docente.`,
+                `Planeja ser aprovada em concurso público próximo de sua residência para otimizar sua qualidade de vida e realizar tratamentos de fertilidade.`,
+                `Almeja atuar na educação com empatia e compromisso humano, superando o medo de não atender plenamente às necessidades dos alunos.`,
+                `Busca unir crescimento técnico e bem-estar pessoal, superando o medo de expectativas estéreis através de planejamento e flexibilidade.`,
+                `Advoga pela defesa intransigente dos Direitos Humanos constitucionais, pretendendo alcançar a aposentadoria com ética, lucidez e pensamento crítico.`,
+                `Alerta contra o imediatismo e consumismo da sociedade atual, mantendo viva a esperança por ver crianças e jovens em uma sociedade mais humana.`,
+                `Deseja continuar aprendendo e transformando vidas na educação, transformando inseguranças em coragem e esperança coletiva.`,
+                `Educadora que enfatiza a urgência do autocuidado, da saúde mental e do apoio mútuo para enfrentar as pressões cotidianas do ambiente escolar.`,
+                `Busca aprimoramento salarial, reconhecimento e desenvolvimento de habilidades em sua profissão escolhida.`,
+                `Focada em aprovação no mestrado acadêmico para consolidar uma carreira sólida voltada à pesquisa e ao impacto social positivo.`,
+                `Psicóloga escolar que sonha com a valorização de sua função na rede de ensino, promovendo espaços de escuta, acolhimento e saúde emocional.`,
+                `Mulher guiada pela convicção de que a educação transforma vidas, sonha com um futuro coletivo pautado na justiça, solidariedade e dignidade familiar e social.`,
+                `Encaram o medo profissional como sombra passageira, utilizando a coragem e a motivação para seguir em frente rumo aos objetivos.`,
+                `Auxiliar administrativa próxima da aposentadoria que pretende desfrutar de tempo livre com viagens, autoconhecimento e novas culturas.`,
+                `Psicóloga na assistência social e educação que busca aprimorar práticas de proteção infantojuvenil em uma sociedade hiperconectada e desigual.`,
+                `Professora que deseja dar significado profundo ao seu trabalho pedagógico, superando medos de estagnação com aperfeiçoamento contínuo.`,
+                `Almeja estabilidade e liderança em projetos educacionais humanizados, transformando medos de erro em motores de crescimento profissional.`,
+                `Estudante de pedagogia que sonha em atuar de forma inclusiva e acolhedora, orgulhando-se do impacto positivo gerado pela educação.`,
+                `Supera o medo de desafios por meio da coragem, construindo passo a passo suas metas de crescimento pessoal e profissional.`,
+                `Aspira ser agente de transformação através de uma educação inclusiva e de excelência, utilizando tecnologias como pontes de vínculo com os alunos.`,
+                `Coordenadora pedagógica que planeja assumir cargo de supervisão de ensino e atuar na docência universitária federal em São Paulo.`,
+                `Primeira formada de sua família humilde, busca evoluir constantemente para atuar como ferramenta acessível e segura na área de formação.`,
+                `Busca estabilidade familiar e profissional através de planejamento e do aprendizado contínuo com os desafios da carreira.`,
+                `Deseja abraçar novos desafios profissionais sem perder de vista seus valores essenciais, superando o medo do arrependimento por omissão.`,
+                `Planeja transicionar da sala de aula para a mediação de conflitos institucionais, utilizando sua experiência para escutar e acolher a comunidade escolar.`,
+                `Reflete sobre as incertezas educacionais trazidas pela hiperconectividade e pelo uso excessivo e acrítico das inteligências artificiais.`,
+                `Almeja construir carreira sólida na educação infantil por meio de estudos continuados e superação de desafios estruturais.`,
+                `Busca o crescimento ético e significativo por meio de planejamento por etapas, superando medos com confiança em sua capacidade profissional.`,
+                `Almeja que o futuro traga acolhimento emocional para os educadores, combatendo o desgaste e a desvalorização da saúde mental docente.`,
+                `Professora dedicada que almeja expandir sua contribuição para o desenvolvimento e acolhimento das crianças na educação.`,
+                `Almeja efetivação em cargo público e permanência comprometida com os valores fundamentais da educação.`,
+                `Professora que deseja superar desafios profissionais com estudo e dedicação para ver seus alunos acreditarem nos próprios sonhos.`,
+                `Professora sensível que busca preservar o encanto pela profissão, combatendo a sobrecarga e construindo marcas positivas na vida dos alunos.`,
+                `Almeja equilíbrio emocional, estabilidade na carreira e proximidade familiar, mantendo a esperança e a maturidade frente aos desafios.`,
+                `Assistente social formada após muitas lutas que deseja atuar na educação, cursar mestrado e contribuir ativamente para a orientação de direitos.`,
+                `Advogada e educadora que busca integrar direito e ensino em projetos voltados à garantia de direitos, equilibrando carreira e vida familiar.`,
+                `Professora de matemática que nutre o sonho profundo de retornar à regência de turmas de berçário na educação infantil.`,
+                `Busca estabilidade, qualificação contínua e crescimento sólido na área da educação, superando receios de perda de oportunidades.`,
+                `Professora focada em despertar o pensamento crítico e humanizado nos estudantes, tendo orgulho de sua contribuição pedagógica.`,
+                `Professor sonhador que planeja cursar mestrado nos próximos ciclos para melhorar sua prática em ciências da natureza e otimizar sua rotina familiar.`,
+                `Almeja aprovação em concurso público para obter independência financeira e cuidar adequadamente da saúde própria e dos pais.`,
+                `Professor de história que enxerga no concurso público a via de estabilidade para aplicar estratégias pedagógicas inclusivas.`,
+                `Almeja estabilidade financeira via concurso público, viagens familiares e aprofundamento acadêmico em nível stricto sensu (mestrado e doutorado).`,
+                `Reflete sobre sua identidade individual e coletiva através da literatura e da crítica social, vislumbrando uma sociedade justa e igualitária.`,
+                `Destaca a necessidade de revigorar energias e ressignificar metodologias de ensino frente aos cenários turbulentos da educação contemporânea.`,
+                `Busca aprender continuamente e compartilhar saberes com seus pares para transformar a cultura coletiva da escola.`,
+                `Professora "raiz" que busca se atualizar constantemente para acompanhar a aceleração comportamental e digital dos adolescentes contemporâneos.`,
+                `Professora de matemática e química com 30 anos de carreira que deseja coroar sua trajetória deixando legados de aprendizado e afeto.`,
+                `Clama por valorização e segurança profissional frente ao aumento alarmante da violência e agressividade direcionada aos professores.`,
+                `Busca aprimorar competências através do estudo contínuo para auxiliar acadêmica e emocionalmente os alunos sob sua tutela.`,
+                `Biólogo e educador que busca consolidar uma carreira híbrida entre ensino, divulgação científica da caatinga e preservação de vínculos estáveis.`,
+                `Professor de filosofia que busca transformar realidades através de aulas dinâmicas, superando o medo da desvalorização e da dispersão tecnológica.`,
+                `Professor de filosofia contratado que busca efetivação no serviço público, casa própria, transporte e sucesso profissional contínuo.`,
+                `Pauta sua conduta profissional em propósitos de vida fundamentados na ética, na humildade e na colaboração para um mundo mais humano.`,
+                `Busca concluir etapas acadêmicas para desfrutar de uma fase madura com estabilidade, qualidade de vida e tempo familiar dedicados.`,
+                `Educador de história e artes que busca estabilidade e reconhecimento para formar estudantes críticos e socialmente conscientes.`,
+                `Almeja atuar como assistente inteligente de alta precisão e empatia, reduzindo distâncias entre conhecimento acadêmico e prática humana.`,
+                `Valoriza atitudes conscientes e empáticas na preservação socioambiental, almejando efetivação em cargo público e reconhecimento ético profissional.`,
+                `Psicóloga que busca consolidar sua atuação clínica e social em saúde mental, equilibrando realização profissional e qualidade de vida.`,
+                `Defende a necessidade de estudo e pesquisa diários para acompanhar o avanço galopante do conhecimento científico contemporâneo.`,
+                `Almeja atuar em salas de recurso (AEE) auxiliando no desenvolvimento e respeito às particularidades de alunos com deficiência.`,
+                `Busca assumir novos espaços na docência pública para transformar vidas, acolhendo as mudanças com coragem e aprendizado contínuo.`,
+                `Mãe e professora que denuncia o esgotamento e a falta de valorização que ameaçam extinguir a classe docente na sociedade atual.`,
+                `Administrativa escolar que busca integrar Direitos Humanos e Saúde Mental no cotidiano, preservando sua sensibilidade contra o esgotamento.`,
+                `Profissional focada no acolhimento e inclusão que busca cursos de extensão e especializações para assumir novos desafios sem estagnação.`,
+                `Busca unir conhecimentos em prol da promoção dos direitos humanos, superando o medo da inalcançabilidade de projetos com propósito.`,
+                `Pauta seus projetos no desejo genuíno de contribuir para o bem comum e equilibrar realização pessoal com responsabilidade social.`,
+                `Destaca como as pressões e expectativas sociais moldam identidades, defendendo a busca por propósitos alinhados ao bem-estar e à autenticidade.`,
+                `Busca superar o medo do fracasso através do esforço na construção de um futuro melhor para si e para a família.`,
+                `Orientadora educacional contemporânea que sonha em coordenar programas de prevenção ao burnout e promoção da inteligência emocional nas escolas.`,
+                `Enfrenta desequilíbrios relacionais no trabalho compreendendo que, assim como uma cirurgia, a reabilitação emocional exige tempo e repouso.`,
+                `Almeja aprimoramento prático e reconhecimento moral e financeiro para tornar a aprendizagem mais significativa na vida dos alunos.`,
+                `Planeja ser aprovada em concurso público de Serviço Social, cursar mestrado e doutorado em educação para atuar como professora e pesquisadora universitária.`,
+                `Professora de matemática que reflete sobre a hostilidade crescente no ensino médio devido ao uso nocivo das telas, avaliando novos rumos profissionais.`,
+                `Almeja ampliar sua atuação para a gestão e liderança educacional inovadora, buscando estabilidade financeira e realização autêntica.`,
+                `Mãe dedicada que busca aprovação em concurso público e aprimoramento contínuo para utilizar seus saberes em benefício do bem-estar alheio.`,
+                `Clama por conscientização ambiental, resgate da poesia, desaceleração urbana e garantia de um ambiente de trabalho humanizado e respeitoso.`,
+                `Aposentada por tempo de serviço em cargo público que busca se reconectar aos estudos para retornar ao mercado e contribuir ativamente com a sociedade.`,
+                `Professora parintinense que planeja ingressar no mestrado, tornar-se referência em gestão escolar e valorizar o território amazônico através da escrita.`,
+                `Guia sua trajetória pelo aprendizado constante, dedicação aos alunos e superação de obstáculos rumo à evolução profissional.`,
+                `Professora que assumiu o desafio de ser assistente de direção, testando novos papéis institucionais com entusiasmo e superando a zona de conforto.`,
+                `Profissional dual que une enfermagem e docência, buscando estabilidade, equilíbrio contra a exaustão e excelência na formação em saúde.`,
+                `Busca construir uma vida dotada de sentido pessoal, superando medos de falha através de escolhas conscientes e independência.`,
+                `Administradora cursando psicologia na maturidade, realizando o sonho de atuar na escuta da alma humana com rigor técnico e ética.`,
+                `Pedagoga que busca expandir seu impacto em salas de AEE, enfrentando as limitações do sistema com inovação e busca por aperfeiçoamento.`,
+                `Professora da educação especial e AEE que defende o acolhimento, a inclusão sensível e o autocuidado psicológico como bases da prática docente.`,
+                `Mulher autista que sonha com uma sociedade fundamentada na equidade, no respeito real às deficiências e na sororidade coletiva.`,
+                `Professor que busca mitigar preconceitos e promover saúde mental na escola, inspirado pelos princípios fundamentais dos Direitos Humanos.`,
+                `Professor da rede pública que conquistou estabilidade em cargo público, tendo como principal receio o esgotamento emocional e a perda de paciência.`,
+                `Busca evoluir na educação por meio de aprendizado contínuo, coragem frente aos desafios e dedicação ao desenvolvimento infantil.`,
+                `Almeja aprovação em concurso público, viagens culturais marcantes e eventual ingresso no mestrado, sentindo-se realizada com o impacto positivo de sua profissão.`,
+                `Busca consolidar formação em psicopedagogia e direitos humanos para enfrentar com sensibilidade as demandas de inclusão e saúde mental na escola.`,
+                `Estudante de pedagogia que busca adquirir experiência para auxiliar crianças e superar medos através da superação de desafios diários.`,
+                `Almeja consolidar sua carreira na rede pública com ética e inclusão, integrando cultura digital e formação socioemocional em suas aulas.`,
+                `Destaca a indissociabilidade entre Direitos Humanos e Saúde Mental na construção de ambientes escolares acolhedores e livres de violência.`,
+                `Planeja concluir mestrado e doutorado em sociologia para estudar as estruturas sociais e integrar grupos de formulação de políticas públicas.`,
+                `Mãe e educadora que busca cursar mestrado e fazer a diferença na vida das pessoas, sustentada pela força de vontade e fé.`,
+                `Pedagoga que planeja assumir a direção escolar a médio prazo e alcançar o ensino superior a longo prazo para transformar vidas através da gestão humanizada.`,
+                `Focada na evolução emocional e espiritual rumo à leveza, desapegando de bens materiais frente às incertezas do envelhecimento.`,
+                `Deseja resgatar o olhar nos olhos e combater a alienação digital através do engajamento e da harmonia nas relações humanas.`,
+                `Educadora experiente que deseja vivenciar sua profissão com leveza, propósito e responsabilidade social, mantendo marcas positivas em sua trajetória.`,
+                `Sonha em encerrar sua carreira docente com o sentimento de dever cumprido e o reconhecimento afetuoso de seus antigos alunos.`,
+                `Orientadora educacional que busca adensar sua prática preventiva e sistêmica em Direitos Humanos e Saúde Mental na rede pública do RS.`,
+                `Busca equilíbrio familiar, estabilidade emocional e reconhecimento na área da educação através de dedicação contínua.`,
+                `Psicóloga escolar que almeja consolidar programas psicossociais humanizados para promover ambientes escolares respeitosos e integrados.`,
+                `Busca construir uma vida equilibrada entre trabalho e lazer, priorizando propósitos pessoais autênticos em detrimento de modelos rígidos de sucesso.`,
+                `Estudante de Direito que busca construir uma carreira ética e independente, dedicando-se a causas com significado pessoal e social.`,
+                `Pedagoga que busca resgatar o prazer em lecionar e desenvolver autoconfiança na expressão de seus desejos e inseguranças.`,
+                `Psicóloga que almeja proporcionar saúde mental e resultados significativos a estudantes, servidores e pacientes de forma genuína.`,
+                `Deseja ser aprovada em concurso federal para atuar em suporte extrassala de aula e orientação discente no ensino superior.`,
+                `Busca criar fóruns permanentes de acolhimento e escuta estudantil para construir uma cultura de paz institucionalizada.`,
+                `Professor dedicado de línguas e humanidades que busca desenvolver projetos significativos superando desafios com resiliência.`,
+                `Dedicada à educação especial, busca aprimorar práticas pedagógicas inclusivas para garantir a independência e participação ativa de cada aluno.`,
+                `Assistente social que busca aprimoramento ético e metodológico para fortalecer a garantia de direitos e a transformação social.`,
+                `Almeja equilíbrio, saúde e aprimoramento constante na educação, exercendo sua profissão com responsabilidade e sensibilidade inclusiva.`,
+                `Alerta sobre os riscos do tecnoestresse e da hiperconectividade, defendendo limites no tempo de tela e resgate do contato com a natureza.`,
+                `Em processo de descoberta profissional, busca ampliar sua atuação com minorias e consolidar caminhos alinhados aos seus valores.`,
+                `Sonha com uma sociedade igualitária onde crianças desenvolvam suas potencialidades e mulheres sejam respeitadas em suas individualidades.`,
+                `Professora de humanidades que reflete sobre os impactos da modernidade e das transformações comportamentais na autoridade e no respeito escolar.`,
+                `Psicóloga que almeja a valorização de sua categoria na assistência social e na educação, fortalecendo a atenção psicossocial.`,
+                `Busca crescimento, aprendizado e dedicação em sua carreira para realizar suas tarefas com orgulho e contribuição social positiva.`,
+                `Professora que aposta nas ferramentas digitais como aliadas e deseja ser lembrada por promover a autonomia ética e moral dos alunos.`,
+                `Deseja manter viva sua escuta ativa e seu papel acolhedor e afetuoso na vida das crianças que compõem seu cotidiano profissional.`,
+                `Professora exausta pela falta de reconhecimento que ainda cultiva a esperança de transformar realidades por meio da educação pública.`,
+                `Gestora educacional que prioriza a escuta, a empatia e o trabalho coletivo para acolher crianças, professores e famílias na escola.`,
+                `Busca construir seu projeto de vida alinhado aos valores de suas raízes e território, sem ceder a pressões externas.`,
+                `Educadora focada em promover inclusão e valorização cultural, superando desigualdades pedagógicas com inovação e dedicação.`,
+                `Dedicada à educação inclusiva, combate ativamente o risco de retrocessos e negligências nos direitos dos alunos com deficiência.`,
+                `Busca estabilidade financeira através de aprovação em concurso público para ajudar seus familiares e fazer a diferença social.`,
+                `Almeja carreira sólida, estabilidade e aprimoramento contínuo de habilidades profissionais para gerar impacto positivo na sociedade.`,
+                `Professora realizada que planeja sua aposentadoria cultivando novas formas de preencher seu tempo livre com tranquilidade e significado.`,
+                `Assistente social comprometida em manter vigilância ética e política contra as injustiças sociais e a perda de seus princípios.`,
+                `Professora que almeja efetivação em cargo público e vê na docência a ferramenta ideal para gerar impactos reais e positivos na sociedade.`,
+                `Almeja estabilidade via concurso público, saúde mental preservada e a formatura de sua filha em prol de um futuro seguro.`,
+                `Valoriza a família, a tranquilidade e a evolução contínua como marcadores fundamentais de uma trajetória com significado real.`,
+                `Professora da educação infantil que clama por investimentos públicos adequados na primeira infância e valorização social da modalidade de ensino.`,
+                `Professora da EJA prisional que busca integrar metodologias ativas e inteligência artificial para promover emancipação e direitos humanos.`,
+                `Planeja cursar Direito para obter estabilidade financeira inicial e, em seguida, Letras-Inglês para seguir sua verdadeira vocação docente.`,
+                `Terapeuta ocupacional que busca independência, estabilidade e aprofundamento de estudos alinhados aos seus valores pessoais.`,
+                `Pesquisadora e atuante em políticas públicas que busca consolidar sua produção teórica e crítica a partir da experiência de campo.`,
+                `Pedagoga que busca estabilidade e aprimoramento contínuo no acolhimento ao desenvolvimento infantil, priorizando o equilíbrio familiar.`,
+                `Deseja desenvolver habilidades de escuta e acolhimento, transformando as dificuldades superadas em diferenciais de atendimento humanizado.`,
+                `Reflete criticamente sobre os malefícios da autocobrança excessiva e da busca cega por produtividade em detrimento da vida familiar.`,
+                `Almeja sustentabilidade na saúde mental, equilíbrio entre vida profissional e pessoal e segurança psicológica ativa no ambiente de trabalho.`,
+                `Professora experiente próxima da aposentadoria que busca deixar um legado prático duradouro para a vida de seus estudantes.`,
+                `Clama por reconhecimento salarial e pedagógico das autoridades competentes e acolhimento emocional para garantir a saúde mental docente.`,
+                `Busca consolidar sua atuação em creches municipais prestando novos concursos e enfrentando as adversidades com fé e resiliência.`,
+                `Busca concluir seus estudos e evoluir na área educacional através de dedicação, persistência e aprimoramento formativo.`,
+                `Deseja enfrentar novos desafios de crescimento profissional e seguir gerando impactos positivos por meio da educação.`,
+                `Educadora e mestranda que busca expandir sua atuação pública sem perder a capacidade de sonhar e transformar realidades coletivamente.`,
+                `Docente da saúde que busca preparar profissionais éticos e humanizados para o SUS, combatendo a precarização dos serviços públicos.`,
+                `Educadora que enxerga na docência o espaço primordial de transformação social, combinando reforço escolar e preparação para concursos.`,
+                `Estudante indígena de matemática que busca concluir sua licenciatura para atuar em sua aldeia e servir de inspiração para outras mulheres.`,
+                `Professora focada em atualização e aprimoramento de competências para alçar novos desafios de carreira com metas claras.`,
+                `Compreende que a postura diante dos medos define o desenvolvimento humano, reafirmando seu compromisso com a preservação da humanidade e empatia.`,
+                `Comprometida com a educação inclusiva e os direitos humanos, busca fundamentar seu sucesso na construção de uma sociedade mais justa e digna.`,
+                `Posiciona sua atuação profissional na interseção entre Direitos Humanos e Saúde, articulando redes comunitárias de promoção da saúde integral.`,
+                `Busca estabilidade e realização profissional, encarando os desafios e medos do caminho com aprendizado e perseverança.`,
+                `Psicóloga com 22 anos de experiência que busca aprovação em concurso federal para conquistar segurança, dignidade e justa valorização salarial.`,
+                `Professora municipal que deseja continuar aprendendo para transformar positivamente a vida dos alunos com dedicação e amor.`,
+                `Professora readaptada e mestrandas em Direitos Humanos na UFPB que busca manter-se ativa na produção de ações de impacto formativo.`,
+                `Estudante de assistência social que busca consolidar espaços de escuta, acolhimento e transformação da realidade nos serviços públicos.`,
+                `Investe em formação contínua para aprimorar seus conhecimentos e alcançar estabilidade profissional na educação.`,
+                `Assistente social que busca acolher, proteger direitos e transformar realidades, deixando marcas positivas de cuidado na vida das pessoas.`,
+                `Professora de matemática que busca desenvolver aulas criativas e significativas para superar as dificuldades de aprendizagem dos alunos.`,
+                `Professora agrícola que planeja cursar geografia e empreender na produção avícola para enriquecer suas aulas teóricas.`,
+                `Retoma seus sonhos de carreira após cuidar de familiares, defendendo uma educação inclusiva fundamentada em preparação, recursos, respeito e empatia.`,
+                `Estudante que busca integrar psicologia, direito e assistência social em uma atuação voltada à garantia de direitos e qualidade de vida.`,
+                `Assistente social que busca estabilidade financeira e realização profissional alinhadas ao bem-estar e significado para sua família.`,
+                `Valoriza o ensino-aprendizagem diário como ferramenta de transformação social, buscando valorizar a família e novas experiências.`,
+                `Almeja uma escola acolhedora pautada no respeito inegociável, preservando sua saúde mental e física frente às pressões da modernidade.`,
+                `Psicóloga que busca especialização em psicopedagogia, construindo uma trajetória autônoma de significativo apoio humano.`,
+                `Professora aposentada que cursa psicologia no 8º período, sonhando em abrir seu próprio consultório para promover a cura e o autoconhecimento.`,
+                `Realizada tardiamente na profissão, sente-se exausta pelo clima hostil de colegas de trabalho, mas mantém firme o propósito de servir.`,
+                `Deseja especializar-se em neuropsicopedagogia e Libras para atuar plenamente na educação inclusiva de alunos com deficiência.`,
+                `Almeja conciliar realização pessoal e autonomia profissional em uma trajetória de impacto social positivo.`,
+                `Estudante universitária em fase inicial de construção acadêmica e profissional.`,
+                `Espera continuar a construir uma carreira gratificante com realização, aprendizado contínuo, desenvolvimento de habilidades e valorização de cada conquista ao longo do percurso.`,
+                `Sonha com estabilidade, realização e gosto pela profissão, tendo o medo de enfrentar dificuldades que a façam desistir, mas deseja focar nos estudos no curto prazo e crescer profissionalmente no médio prazo.`,
+                `Deseja continuar na Educação integrando a Arte, a Arteterapia, os Direitos Humanos e a Saúde Mental para acolher pessoas neurodivergentes, tendo o medo de encontrar barreiras, mas buscando transformar o conhecimento em ações inclusivas.`,
+                `Sonha em crescer na educação como uma profissional humanizada e inclusiva, tendo receio de não estar preparada para mudanças, mas pretendendo se aperfeiçoar continuamente para fazer a diferença.`,
+                `Com 34 anos de dedicação em turmas multisseriadas, teme a impotência diante da desestruturação familiar e do esvaziamento dos alunos, desejando manter a flexibilidade e garantir uma aposentadoria com saúde física e mental.`,
+                `Deseja continuar crescendo como professor e promovendo uma educação humana e inclusiva, encarando os medos como parte da caminhada e focando na conclusão de suas formações.`,
+                `Sonha em encontrar educadores humanistas e que a violência diminua, vendo o futuro sem grandes esperanças de melhorias educacionais devido aos altos índices de analfabetismo funcional.`,
+                `Sonha em crescer profissionalmente e adquirir reconhecimento, superando inseguranças com dedicação para se aperfeiçoar no curto prazo e alcançar realização no médio prazo.`,
+                `Deseja aprimorar sua prática de forma humana e inclusiva, superando seus medos para conquistar estabilidade, reconhecimento e transformar vidas.`,
+                `Quer continuar sendo uma professora dedicada que transmite valores aos alunos, superando os receios diários da escola por meio do aprimoramento constante da sua prática.`,
+                `Aos 52 anos, reconhece que medos e angústias existem e que a profissão é desvalorizada pelos governos, mas segue sonhando, aprendendo e acreditando que sempre é tempo de recomeçar.`,
+                `Deseja envelhecer com lucidez para aproveitar os momentos e respeitar os outros em sua trajetória profissional, tendo o medo de perder essa lucidez e oprimir semelhantes devido à hiperconectividade.`,
+                `Busca aprimorar conhecimentos para promover respeito, inclusão e saúde mental, investindo na formação a curto prazo para ampliar sua contribuição comunitária no futuro.`,
+                `Sonha em consolidar práticas transformadoras para a EJA e o ensino de Ciências Humanas em privação de liberdade, superando limitações estruturais com metodologias ativas.`,
+                `Sonha em proporcionar uma vida segura aos filhos e crescer profissionalmente, conciliando seus papéis com coragem, dedicação e persistência.`,
+                `Deseja continuar crescendo pessoal e profissionalmente com estabilidade, encarando os medos de não alcançar o planejamento como oportunidades de aprendizado e humanidade.`,
+                `Professor de Educação Física realizado, deseja continuar crescendo e sendo reconhecido pelo compromisso, tendo o medo de perder o respeito dos alunos, mas apostando no diálogo.`,
+                `Deseja consolidar estabilidade na rede pública e priorizar a saúde mental e o protagonismo dos estudantes, buscando qualificação contínua em metodologias inclusivas apesar da sobrecarga.`,
+                `Tem o sonho de ver os filhos com saúde e conquistar a casa própria, lidando com medos e crenças de incapacidade por meio de cursos de aperfeiçoamento.`,
+                `Possui múltiplos sonhos, incluindo cursar Medicina (Neurologia ou Psiquiatria), fazer mestrado e atuar na docência, unindo suas formações em Terapia Ocupacional e Direito para integrar autonomia e proteção social.`,
+                `Tem o maior sonho de crescer na educação inclusiva e acolhedora, transformando suas inseguranças diante dos desafios em motivação.`,
+                `Espera que sua profissão continue possibilitando a contribuição com melhores condições de vida àqueles que alcançar, compreendendo que seus atos geram impactos reais.`,
+                `Professora de Geografia com 19 anos de experiência, sonha com uma rotina sem violência verbal, além de conquistar a casa própria e um lar seguro para os filhos.`,
+                `Busca ampliar conhecimentos em inclusão e saúde mental, desejando continuar crescendo e construindo um caminho profissional com propósito e significado.`,
+                `Deseja superar os traumas recentes de pandemias, enchentes e violências para recuperar a coragem de ser mulher, mãe e professora sem perder a indignação contra a barbárie.`,
+                `Especializanda em Neuropsicopedagogia, busca aliar estratégias inclusivas e sensibilidade humana para superar os receios diante das evoluções tecnológicas.`,
+                `Sonha em consolidar um espaço clínico comunitário que integre psicologia, direitos humanos, redes de apoio a vítimas de violência e incidência em políticas públicas.`,
+                `Deseja ampliar sua atuação como assistente social e na educação unindo compromisso social e formação, superando o medo de não realizar seus projetos.`,
+                `Sonha em ser uma boa profissional sem se autossabotar, buscando paz com a gestão no curto prazo e aprofundamento de conhecimentos e tempo para a família no longo prazo.`,
+                `Almeja consolidar-se como referência na Educação Infantil com um trabalho afetivo, coordenando projetos pedagógicos e compartilhando aprendizados.`,
+                `Professor que sonha com respeito, valorização e o fim da violência e do adoecimento docente, desejando apenas ser feliz em todos os espaços de sua vida.`,
+                `Olha para o retrovisor como referência e planeja cursar o mestrado para fortalecer sua vida profissional e continuar transformando a realidade.`,
+                `Deseja crescer na psicologia mantendo o cuidado com o outro, superando o medo de precisar recomeçar e construindo um trabalho com significado.`,
+                `Sonha com uma trajetória de realização, independência e estabilidade, buscando equilíbrio entre crescimento profissional e felicidade pessoal.`,
+                `Sonha em fazer do trabalho um instrumento de transformação humana e inclusiva, transformando inseguranças em força para se qualificar no curto e médio prazo.`,
+                `Sonha com estabilidade profissional, aquisição da casa própria e bens para dar um bom futuro e princípios justos ao filho.`,
+                `Deseja gerar impacto positivo na comunidade através de práticas éticas e inovadoras, combatendo o medo da estagnação e de pressões externas por um sucesso engessado.`,
+                `Destaca a importância de transformar teoria em prática na educação e nos direitos humanos para construir uma escola inclusiva e de respeito mútuo.`,
+                `Sonha em unir educação, filosofia e pesquisa com estabilidade e valores éticos, mantendo-se aberto a mudanças de rota e aprendizados contínuos.`,
+                `Deseja gerar impacto real na vida das pessoas sem cair na estagnação, encarando o futuro com preparo, coragem e aprendizado contínuo.`,
+                `Professora com 17 anos de docência pela frente, deseja permanecer em sala de aula alfabetizando com afeto e limites, pronta para transicionar de carreira caso perca a felicidade no ofício.`,
+                `Enxerga o sonho como essência da vida, defendendo a integração entre a vida pessoal e profissional para aprender, reaprender e construir novos caminhos.`,
+                `Cuidadora infantil prestes a completar 40 anos, sonha em abrir uma escola para a primeira infância e atuar com psicanálise, buscando estabilidade financeira e realização.`,
+                `Planeja nutrir o bem-estar e as trocas comunitárias por meio de estudos e autocuidado diário, espalhando transformações como um rizoma.`,
+                `Move-se pelos sonhos para construir uma vida com propósito e significado, valorizando as pequenas vitórias e aprendizados do percurso.`,
+                `Servidora pública há 26 anos, deseja manter a ética e a resiliência para alcançar a aposentadoria com qualidade de vida e saúde mental.`,
+                `Anseia por aprovação no mestrado, independência financeira e preservação da saúde física e mental para desfrutar da família.`,
+                `Busca consolidar carreira com propósito, autonomia e estabilidade financeira, transformando o medo da estagnação em disciplina e capacitação.`,
+                `Vive entre o medo de não alcançar todos os alunos e o desejo de transformar vidas e formar pessoas autônomas, guiada pelo amor à educação.`,
+                `Pretende concluir o estágio probatório no curto prazo, e aperfeiçoar-se em Ciências Humanas e Inteligência Artificial na educação a longo prazo.`,
+                `Próxima da aposentadoria em sete anos, deseja encerrar sua trajetória na regência de classe para preservar sua paz, dedicando seu tempo e saúde à família.`,
+                `Reflete sobre a necessidade de viver o presente e aprender com o passado, buscando equilibrar as expectativas maduras com sua essência.`,
+                `Psicóloga que almeja reconhecimento salarial e engajamento institucional para a classe, enfrentando o cansaço com a esperança na importância da saúde mental.`,
+                `Espera colher frutos maduros e empáticos de sua vivência atual, compreendendo que somos produtos de nossas relações e aprendizados.`,
+                `Vê a educação como sentido vital de transformação, pretendendo crescer profissionalmente sem abrir mão de seus valores e capacidade de aprender.`,
+                `Psicólogo com 10 anos de experiência, tem o sonho de focar no atendimento em grupo baseado em ACT, DBT e TCC nas escolas.`,
+                `Professor que objetiva aprovação em concurso efetivo no MS, estabilidade, valorização profissional e a titulação de mestre para melhorar o ensino.`,
+                `Sonha com uma sociedade equitativa e inclusiva, planejando concluir a graduação e futuramente ingressar no mestrado e no ensino superior.`,
+                `Professora de AEE aos 59 anos, sonha em se aposentar com tranquilidade para cuidar de si e da família, guardando com carinho as experiências da carreira.`,
+                `Deseja que sua escuta ativa e conhecimento promovam acolhimento e saúde mental, buscando aprofundar estudos e equilibrar rigor teórico com empatia.`,
+                `Quer continuar estudando e ampliando sua formação na Educação Infantil e no mestrado, valorizando as relações e construindo uma trajetória alinhada aos seus valores.`,
+                `Deseja construir uma trajetória de orgulho e aprendizado contínuo, superando os medos e as incertezas para não desistir dos seus sonhos.`,
+                `Sonha em ser uma professora marcante que cria um espaço seguro de aprendizado, superando o medo de se frustrar com a profissão por meio da vontade de evoluir.`,
+                `Sonha em se tornar psicóloga clínica (TCC ou psicanálise), conquistar autonomia financeira, bens materiais e estabilidade para comemorar suas conquistas com a família.`,
+                `Assistente Social pós-graduada que busca conquistar espaço no mercado e estabilidade financeira, superando a insegurança inicial com planejamento e perseverança.`,
+                `Une psicologia, educação popular e militância para fortalecer comunidades quilombolas e a saúde mental do povo, almejando o mestrado e a pesquisa.`,
+                `Deseja aprimorar sua prática inclusiva e ingressar em uma pós-graduação stricto sensu para pesquisar Educação e Relações Étnico-Raciais.`,
+                `Sonha em unir sua experiência docente à psicanálise para ser fonte de esperança na vida das pessoas, preparando-se com estudo e coragem.`,
+                `Deseja concluir o mestrado em Administração e progredir com dedicação, valorizando a família e os momentos simples sem perder de vista o crescimento pessoal.`,
+                `Quer crescer na educação especial e inclusiva como professora, buscando estabilidade e especializações para ajudar alunos que precisam de um olhar cuidadoso.`,
+                `Enfermeira que deseja ser respeitada em seu valor, ver a melhoria dos pacientes, continuar especializando-se e prestar assistência humanizada sem riscos de falhas por exaustão.`,
+                `Espera que sua carreira docente seja marcada por aprendizado e acolhimento, tendo como único medo não conseguir controlar ou acolher todas as situações da sala de aula.`,
+                `Mais madura, prioriza a saúde física e mental saindo do sedentarismo, tendo como objetivo profissional tornar-se membro do Ministério Público.`,
+                `Destaca a autoria do próprio trabalho e o reconhecimento das contribuições de ideias alheias.`,
+                `Sonha com uma trajetória de propósito, equilíbrio e aprendizado contínuo, valorizando o respeito e o diálogo para contribuir positivamente com o território.`,
+                `Sonha em não deixar de sonhar diante das desigualdades, desejando que direitos sejam efetivados e combatendo a desesperança frente às injustiças.`,
+                `Professora de AEE que aponta a urgência de melhorias estruturais, salariais e de segurança na educação para dar suporte às limitações emocionais docentes.`,
+                `Deseja superar o medo do fracasso e da passagem do tempo, buscando saúde, paz, estabilidade e felicidade junto à família e aos seus objetivos.`,
+                `Quer continuar crescendo como professora da EJA prisional, buscando novos conhecimentos para transformar vidas e exercer a empatia no sistema.`,
+                `Realizada como diretora escolar, deseja se aposentar na profissão com saúde física e mental, preocupando-se com os rumos políticos e a valorização da educação.`,
+                `Pretende seguir na educação atuando em novas etapas de ensino e rompendo com os desafios trazidos pelas novas tecnologias e perfis de alunos.`,
+                `Deseja construir uma trajetória com propósito de servir e transformar realidades, superando o medo de portas fechadas por meio da persistência.`,
+                `Sonha em contribuir para uma educação inclusiva e humanizada, aproveitando formações continuadas para respeitar as singularidades dos estudantes.`,
+                `Tem o maior sonho de fortalecer a educação inclusiva e acolhedora, encarando os desafios e mudanças da prática pedagógica como oportunidades de crescimento.`,
+                `Busca continuar estudando e se especializando em políticas públicas, assistência social, saúde e direitos humanos, unindo sua sensibilidade à prática profissional.`,
+                `Deseja equilíbrio, tranquilidade e qualidade de vida, priorizando caminhos que façam sentido e conciliem melhor o trabalho com o âmbito pessoal.`,
+                `Percebeu com o tempo que a família é o bem mais valioso, buscando sonhar com a aposentadoria, a formatura da filha e um mundo mais justo e humano.`,
+                `Futuro pedagogo que deseja atuar na EJA devolvendo a dignidade da leitura, superando o medo da barreira digital através do domínio de letramentos e inovação.`,
+                `Professora e mãe recente que sonha com tecnologia libertadora, um SUS forte e o fim do esgotamento docente, temendo o uso mal-intencionado da Inteligência Artificial na infância.`,
+                `Sonha com o respeito e valorização do trabalho docente, tendo o objetivo de curto e médio prazo de alcançar ascensão profissional até o cargo de vice-diretor.`,
+                `Auxiliar de educação infantil que pretende concluir Pedagogia, passar em concurso público e realizar o sonho de atuar como professora alfabetizadora.`,
+                `Deseja crescer profissionalmente com dedicação e perseverança, transformando o medo do desconhecido em motivação para evoluir e se orgulhar de sua caminhada.`,
+                `Sonha com turmas disciplinadas e focadas no aprendizado antes de se aposentar, tendo o receio de se frustrar com a sobrecarga de culpa depositada nos professores.`,
+                `Sonha em atuar clinicamente como psicopedagoga e neuropsicopedagoga com base em sua experiência na APAE e estimulação precoce.`,
+                `Professora estadual de 57 anos que vive o momento presente diante das incertezas da profissão, tendo como maior certeza atual a tentativa de cuidar da saúde mental.`,
+                `Busca novos conhecimentos para aprimorar sua prática no AEE, encarando o medo de não acompanhar as mudanças escolares como estímulo para estudar.`,
+                `Receia o avanço do individualismo e da conectividade sem afeto, desejando a construção coletiva da sociedade e o crescimento humano onilateral.`,
+                `Busca independência financeira, estabilidade e satisfação profissional, entendendo que os erros ensinam e que não se deve viver para atender expectativas alheias.`,
+                `Sonha em concluir o Ensino Superior em Serviço Social para atuar na área, dedicando-se aos estudos para afastar o medo do fracasso.`,
+                `Planeja aprofundar-se em áreas específicas, alinhar seus objetivos à cultura de empresas e demonstrar constante disposição para aprender e se adaptar.`,
+                `Professora e psicóloga escolar que planeja ingressar no doutorado após o mestrado, buscando unir psicologia e linguagem para impactar o desenvolvimento dos alunos.`,
+                `Psicóloga que sonha em atuar no ambiente escolar promovendo saúde mental, inclusão e direitos humanos, investindo na formação contínua e na escuta.`,
+                `Analista de sistemas e professor que sonha em transformar jovens pela educação tecnológica, buscando especializações para acompanhar a rápida evolução digital.`,
+                `Coordenadora pedagógica que deseja fortalecer práticas e metodologias inovadoras na EJA e na escola, valorizando o diálogo e a construção coletiva.`,
+                `Busca mais tempo livre para qualidade de vida e lazer, mantendo a atualização tecnológica e a estabilidade profissional.`,
+                `Deseja continuar aprendendo para acolher alunos imigrantes e promover uma educação igualitária, sem discriminações e com escolas preparadas.`,
+                `Quer ampliar conhecimentos em Saúde Mental e Educação Especial para fazer a diferença na vida dos estudantes com dedicação e responsabilidade.`,
+                `Deseja construir um trabalho com significado que proporcione cuidado e acolhimento às pessoas, começando por investir em novos cursos e técnicas.`,
+                `Profissional da saúde pública que deseja cuidar das pessoas na atenção básica e coletiva com escuta humana, combatendo o risco de perder a sensibilidade.`,
+                `Educadora que almeja expandir formações na sala de aula e na coordenação escolar, servindo de orgulho para as filhas e transformando obstáculos em aprendizado.`,
+                `Espera obter mais conhecimento para lidar com a evolução tecnológica, mantendo a lucidez e superando bloqueios gerados por inseguranças psicológicas.`,
+                `Deseja continuar crescendo na educação humana e inclusiva, cuidando de si mesma para não perder a esperança e fortalecendo os direitos humanos na escola.`,
+                `Educadora com mais de 45 anos de estrada que deseja deixar um legado educativo para os netos e bisnetos, formando cidadãos conscientes e respeitosos.`,
+                `Sonha em unir conhecimento técnico e sensibilidade humana na saúde mental e direitos humanos, consolidando sua formação a curto e médio prazo.`,
+                `Espera prosperidade, manter os entes queridos por perto, trabalhar como educadora e lutar pela justiça social e melhoria do coletivo.`,
+                `Sonha em ver os alunos internalizando ensinamentos morais e de boa conduta transmitidos pelos educadores para a construção de uma sociedade melhor.`,
+                `Deseja construir uma carreira com estabilidade e crescimento por meio de investimentos na formação e escolhas conscientes alinhadas aos seus próprios desejos.`,
+                `Deseja preservar a vitalidade e a saúde mental diante de estruturas institucionais desgastantes, fazendo do trabalho um espaço de emancipação e respeito.`,
+                `Tem como objetivo construir uma carreira sólida baseada em aprendizado contínuo, ética, estabilidade financeira e bom trabalho em equipe.`,
+                `Facilitadora da rede municipal que deseja continuar aprendendo para tornar sua prática mais humana e ética, combatendo desafios relacionais.`,
+                `Já alcançou seus sonhos de juventude e agora foca no desenvolvimento do filho, desejando concluir capacitações, viajar mais, descansar e investir em artesanato.`,
+                `Supervisora escolar ex-professora de Letras que deseja continuar se reinventando para dar propósito e marcas positivas à educação.`,
+                `Atuando na Gerência de Direitos Humanos e Equidade em Curitiba, deseja aprofundar políticas públicas para transformar o cotidiano das escolas e combater desigualdades.`,
+                `Deseja construir uma trajetória estável e significativa alinhada aos seus próprios valores, estudando e abrindo-se para descobertas sem focar apenas em expectativas alheias.`,
+                `Quer continuar trabalhando na educação inclusiva, buscando estabilidade e definindo sucesso como a capacidade de transformar vidas e ajudar crianças.`,
+                `Sonha em continuar aprendendo para ajudar alunos a acreditarem em si, esperando maior valorização salarial, menos burocracia e melhores estruturas nas escolas.`,
+                `Deseja continuar alfabetizando com leveza e menos autocobrança, buscando desapego e tranquilidade para os próximos anos.`,
+                `Foca em capacitar-se para transformar vidas na educação infantil e atuar como agente de mudança social apesar dos desafios da profissão.`,
+                `Deseja retornar ao mercado de trabalho com autonomia e equilíbrio emocional, transformando o medo de não ser reconhecida em motivação.`,
+                `Sonha com estabilidade profissional baseada em merecimento e aptidões reais, respeitando a si mesma e aos outros sem recorrer a facilidades desonestas.`,
+                `Deseja crescer na educação cursando um mestrado e consolidando uma trajetória significativa da qual possa se orgulhar.`,
+                `Deseja ser uma educadora sensível e atenta às singularidades das crianças, transformando as dificuldades de trabalho em oportunidades de diálogo e humanização.`,
+                `Sonha com um mundo empático e justo onde o professor seja valorizado e reconhecido por sua importância na sociedade democrática.`,
+                `Mestre atuante na Diretoria Regional de Educação de SP, deseja retornar ao doutorado para focar em convivência, clima escolar e direitos humanos.`,
+                `Deseja construir uma carreira significativa na educação com práticas sensíveis e inclusivas, superando os medos através da formação contínua.`,
+                `Deseja um mundo sem guerras e teme os erros humanos ligados ao uso destrutivo da tecnologia e de máquinas.`,
+                `Pretende capacitar-se para lidar com os crescentes desafios educacionais, buscando trocas coletivas e cuidando da própria saúde mental.`,
+                `Psicopedagoga que sonha em viajar de avião e atuar como palestrante para inspirar professores e famílias, transformando o medo de falar em público em estudo.`,
+                `Professor com rotina intensa que busca gerenciar melhor o tempo para alcançar estabilidade profissional, pessoal e financeira.`,
+                `Psicóloga que almeja sucesso, estabilidade financeira, reconhecimento ético e a abertura de uma clínica própria para inspirar novos profissionais.`,
+                `Enfermeira que busca integrar assistência humanizada e escuta ativa, planejando cursar mestrado para atuar na docência universitária e prestar concurso.`,
+                `Busca sucesso e estabilidade por meio de concursos, mas teme o adoecimento gerado pela docência atual, priorizando sua saúde e felicidade.`,
+                `Deseja construir uma trajetória com propósito alinhada aos seus valores, buscando independência financeira e abertura para mudanças.`,
+                `Terapeuta ocupacional em formação motivada pela experiência com o filho, desejando estudar e construir seu caminho sem pressões excessivas.`,
+                `Deseja unir conhecimento, realização e propósito na educação, buscando autonomia, estabilidade e especializações no médio prazo.`,
+                `Diretor escolar com 21 anos de experiência na rede pública, deseja ingressar no doutorado, ampliar a docência universitária e aproximar-se da Rede Federal.`,
+                `Professor que busca crescer e conquistar estabilidade, transformando os desafios de seis de anos de carreira em aprendizado humanizado.`,
+                `Vocacionado à docência, enxerga o impacto educacional na formação de cidadãos críticos, inclusivos e éticos que continuaram vivos nas próximas gerações.`,
+                `Gestora escolar que sonha com uma equipe unida e o florescimento dos alunos, temendo o esgotamento, a burocracia e o adoecimento docente.`,
+                `Busca estabilidade e utilidade social por meio do trabalho, transformando o medo de errar em motivação para estudar e evoluir.`,
+                `Professora há 34 anos com formação em Sociologia, não pretende continuar lecionando após a aposentadoria devido ao esgotamento emocional, planejando atuar na psicologia e psicoterapia.`,
+                `Sonha em cursar Educação Física, ver aprovada a PL 2531 para não docentes e acompanhar a formatura e o doutorado das filhas.`,
+                `Marcada por traumas superados com fé em Deus, sonha com uma vida digna e quer continuar ajudando a transformar realidades.`,
+                `Professor de Física concursado há mais de 25 anos com mestrado em andamento, espera continuar contribuindo para a formação de jovens conscientes.`,
+                `Busca passar em concurso público para obter estabilidade, paz e segurança, desejando aprender a cuidar de si mesma com o mesmo afinco que cuida dos outros.`,
+                `Anseia por estar preparada para as novas demandas pedagógicas e de gestão diante das novas gerações de alunos.`,
+                `Sonha em se sentir plena e reconhecida na Educação Especial, buscando estabilidade, término de estudos e paz com propósito.`,
+                `Almeja estabilidade e reconhecimento com salário digno, temendo o esgotamento físico e mental decorrente da burocracia e da instabilidade do sistema educacional.`,
+                `Professora de Geografia que deseja aprimorar práticas criativas e continuar estudando para valorizar a educação como instrumento de transformação.`,
+                `Orientadora educacional com mais de 20 anos de carreira que se mudou do RS para SC em busca de qualidade de vida e novos projetos com propósito.`,
+                `Deseja continuar aperfeiçoando-se na educação com coragem, enfrentando os medos do desconhecido para construir uma trajetória baseada em dedicação.`,
+                `Deseja cursar mestrado e atuar na formulação de políticas públicas democráticas, inclusivas e de garantia de direitos alinhadas à sua trajetória.`,
+                `Assessora de direção e professora efetiva em SC, quer ampliar habilidades para atuar com ética em uma escola humana, acolhedora e democrática.`,
+                `Deseja continuar exercendo um trabalho humano e significativo na escola, superando receios com responsabilidade e compromisso.`,
+                `Divide seu território entre a sala de aula e o doutorado (retomado após a maternidade), vivenciando uma fase dedicada à literatura.`,
+                `Sonha em ter orgulho de si mesma, conquistar paz, casa e família, superando o medo de não conseguir com coragem e persistência.`,
+                `Psicóloga do feminino que atua com mulheres em situação de violência, buscando consolidar uma prática focada no acolhimento e na proteção de direitos.`,
+                `Deseja resgatar seu papel de agente de mudança através da arte, promovendo a adolescentes periféricos a mesma oportunidade de transformação que recebeu no passado.`,
+                `Psicóloga nordestina defensora do SUS, sonha com uma saúde mental que acolha e escute antes de rotular, resistindo à lógica da produtividade capitalista.`,
+                `Educadora com 26 anos de experiência que abriu sua própria escola de Educação Infantil há pouco mais de um ano, desejando continuar inovando e humanizando o ensino.`,
+                `Busca estabilidade via concurso público (jornada de 30 horas), a efetivação da lei de psicólogos e assistentes sociais nas escolas e viagens pelo Brasil.`,
+                `Oficial veterano do Exército com mais de 30 anos de carreira e psicólogo há 10 anos, foca no acolhimento de missionários e na psicologia intercultural baseada em direitos humanos.`,
+                `Sonha em se tornar uma psicóloga escolar exemplar e ter sua própria clínica, enfrentando as dificuldades financeiras com coragem e dedicação.`,
+                `Deseja fazer da educação um espaço de acolhimento na gestão, cuidando de si mesma para não se esquecer de seus próprios sonhos.`,
+                `Professora há 22 anos cansada da indisciplina atual, pensa em prestar concurso para direção escolar para suportar chegar à aposentadoria.`,
+                `Professora de Inglês realizada na profissão, deseja continuar se aperfeiçoando, fazer intercâmbio e encorajar alunos a não desistirem dos sonhos.`,
+                `Busca estabilidade financeira para cursar doutorado e pesquisar Direitos Humanos com foco em Saúde Mental, superando o medo de mudanças.`,
+                `Profissional do CAPS que sonha em avançar na formação acadêmica e unir psicologia, saúde mental e educação com compromisso social.`,
+                `Deseja honrar o cargo que lhe foi confiado com dedicação, tendo em Deus e na família sua base para superar o receio de não entregar o melhor.`,
+                `Cultiva a esperança por uma educação focada no respeito e na solidariedade, lembrando-se de que a vida acontece no presente.`,
+                `Deseja unir Direito e Serviço Social para atuar com ética e estabilidade, fazendo de sua profissão um instrumento de transformação social.`
+            ];
+
+            const tbody = document.getElementById('tableBody');
+            
+            if (tbody) {
+                rawData.forEach((text, index) => {
+                    let perfil = "Profissional da Educação";
+                    if(text.toLowerCase().includes("psicólog") || text.toLowerCase().includes("psicolog")) perfil = "Profissional de Psicologia";
+                    else if (text.toLowerCase().includes("assistente social")) perfil = "Assistente Social";
+                    else if (text.toLowerCase().includes("estudante") || text.toLowerCase().includes("cursando")) perfil = "Estudante";
+                    else if (text.toLowerCase().includes("enfermeir")) perfil = "Profissional de Enfermagem";
+                    else if (text.toLowerCase().includes("gestor") || text.toLowerCase().includes("diretor") || text.toLowerCase().includes("coordenador")) perfil = "Gestão Escolar";
+                    else if (text.toLowerCase().includes("professor") || text.toLowerCase().includes("educador") || text.toLowerCase().includes("pedagog") || text.toLowerCase().includes("docente")) perfil = "Docente/Educador";
+
+                    const tr = document.createElement('tr');
+                    tr.className = "hover:bg-slate-800/30 transition-colors";
+                    
+                    const identifier = `Cursista ${index + 1}`;
+                    
+                    tr.innerHTML = `
+                        <td class="px-4 py-3 align-top w-1/4">
+                            <div class="font-medium text-slate-200">${identifier}</div>
+                            <div class="text-[10px] text-slate-500 mt-1 uppercase tracking-wider">${perfil}</div>
+                        </td>
+                        <td class="px-4 py-3 align-top border-l border-slate-800/50">
+                            <p class="text-xs text-slate-400 leading-relaxed">${text.trim()}</p>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+        });
+
+        // Search Functionality
+        window.filterTable = function() {
+            const input = document.getElementById("searchInput");
+            const filter = input.value.toUpperCase();
+            const table = document.getElementById("cursistTable");
+            const tr = table.getElementsByTagName("tr");
+
+            for (let i = 1; i < tr.length; i++) {
+                let textValue = tr[i].textContent || tr[i].innerText;
+                if (textValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    </script>
+</body>
+</html>
