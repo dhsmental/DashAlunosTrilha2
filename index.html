@@ -347,7 +347,6 @@
                         <h3 class="text-lg font-bold text-white">Resumo Anônimo das Respostas dos Alunos</h3>
                         <p class="text-xs text-slate-400">Algumas das 599 respostas (nomes ocultados para preservar privacidade)</p>
                     </div>
-                    
                 </div>
 
                 <div class="table-container border border-slate-800 rounded-xl overflow-y-auto custom-scrollbar flex-1 relative">
@@ -495,7 +494,8 @@
                             ],
                             borderWidth: 1,
                             borderRadius: 4,
-                            barPercentage: 0.6
+                            barPercentage: 0.35,     /* Largura das barras reduzida conforme solicitado */
+                            categoryPercentage: 0.5
                         }]
                     },
                     options: {
@@ -549,101 +549,101 @@
                 }
             }
 
-            // --- 19 Respostas Curadas sem Contagem Numérica ---
+            // --- 19 Respostas Curadas padronizadas (Cores e badges ajustadas conforme imagem) ---
             const curatedResponses = [
                 {
                     perfil: "Professores / Educadores",
-                    badgeClass: "bg-indigo-500/10 text-indigo-300 border-indigo-500/30",
+                    badgeClass: "bg-indigo-950/60 text-indigo-300 border-indigo-800/50",
                     texto: "Busca constante por aprimoramento metodológico e práticas pedagógicas inovadoras para engajar alunos e qualificar o processo de ensino-aprendizagem na escola."
                 },
                 {
                     perfil: "Psicologia / Serv. Social",
-                    badgeClass: "bg-emerald-500/10 text-emerald-300 border-emerald-500/30",
+                    badgeClass: "bg-indigo-950/60 text-indigo-300 border-indigo-800/50",
                     texto: "Enfatiza a importância absoluta da saúde mental docente e do acolhimento psicológico, alertando sobre os riscos severos da síndrome de burnout e da exaustão emocional na rede pública."
                 },
                 {
                     perfil: "Professores / Educadores",
-                    badgeClass: "bg-indigo-500/10 text-indigo-300 border-indigo-500/30",
+                    badgeClass: "bg-indigo-950/60 text-indigo-300 border-indigo-800/50",
                     texto: "Relata forte preocupação com o aumento da indisciplina e de episódios de violência escolar, buscando ferramentas baseadas em direitos humanos para a mediação de conflitos."
                 },
                 {
                     perfil: "Gestão / Orientação",
-                    badgeClass: "bg-amber-500/10 text-amber-300 border-amber-500/30",
+                    badgeClass: "bg-indigo-950/60 text-indigo-300 border-indigo-800/50",
                     texto: "Aborda os impactos da desvalorização profissional e salarial da categoria, defendendo melhores condições estruturais para assegurar a permanência e dignidade dos educadores."
                 },
                 {
                     perfil: "Professores / Educadores",
-                    badgeClass: "bg-indigo-500/10 text-indigo-300 border-indigo-500/30",
+                    badgeClass: "bg-indigo-950/60 text-indigo-300 border-indigo-800/50",
                     texto: "Reflete sobre os desafios contemporâneos impostos pelo avanço acelerado da tecnologia e da inteligência artificial, buscando manter o vínculo humano e o pensamento crítico."
                 },
                 {
                     perfil: "Psicologia / Serv. Social",
-                    badgeClass: "bg-emerald-500/10 text-emerald-300 border-emerald-500/30",
+                    badgeClass: "bg-indigo-950/60 text-indigo-300 border-indigo-800/50",
                     texto: "Foca sua atuação na educação inclusiva, acolhendo estudantes com deficiência e neurodivergências, combatendo preconceitos e garantindo equidade no ambiente escolar."
                 },
                 {
                     perfil: "Professores / Educadores",
-                    badgeClass: "bg-indigo-500/10 text-indigo-300 border-indigo-500/30",
+                    badgeClass: "bg-indigo-950/60 text-indigo-300 border-indigo-800/50",
                     texto: "Deseja superar a sobrecarga burocrática diária através de formações continuadas que valorizem a escuta sensível e o desenvolvimento socioemocional dos estudantes."
                 },
                 {
                     perfil: "Outros / Não Especificado",
-                    badgeClass: "bg-purple-500/10 text-purple-300 border-purple-500/30",
+                    badgeClass: "bg-indigo-950/60 text-indigo-300 border-indigo-800/50",
                     texto: "Busca estabilidade profissional por meio de aprovação em concursos públicos, conciliando o crescimento na carreira com a preservação da saúde física e mental."
                 },
                 {
                     perfil: "Professores / Educadores",
-                    badgeClass: "bg-indigo-500/10 text-indigo-300 border-indigo-500/30",
+                    badgeClass: "bg-indigo-950/60 text-indigo-300 border-indigo-800/50",
                     texto: "Aponta a necessidade urgente de parcerias efetivas entre família e escola voltadas à preservação da saúde mental da comunidade escolar frente às pressões modernas."
                 },
                 {
                     perfil: "Psicologia / Serv. Social",
-                    badgeClass: "bg-emerald-500/10 text-emerald-300 border-emerald-500/30",
+                    badgeClass: "bg-indigo-950/60 text-indigo-300 border-indigo-800/50",
                     texto: "Atua na articulação entre direitos humanos e saúde pública, buscando qualificar intervenções voltadas à garantia de direitos e ao suporte a populações vulneráveis."
                 },
                 {
                     perfil: "Gestão / Orientação",
-                    badgeClass: "bg-amber-500/10 text-amber-300 border-amber-500/30",
+                    badgeClass: "bg-indigo-950/60 text-indigo-300 border-indigo-800/50",
                     texto: "Gestor escolar que enfrenta desafios diários com o esgotamento docente e busca estratégias institucionais de liderança humanizada para promover o bem-estar coletivo."
                 },
                 {
                     perfil: "Professores / Educadores",
-                    badgeClass: "bg-indigo-500/10 text-indigo-300 border-indigo-500/30",
+                    badgeClass: "bg-indigo-950/60 text-indigo-300 border-indigo-800/50",
                     texto: "Destaca a urgência de superar métodos tradicionais excludentes, adotando uma didática integradora que respeite as pluralidades e as diferenças em sala de aula."
                 },
                 {
                     perfil: "Outros / Não Especificado",
-                    badgeClass: "bg-purple-500/10 text-purple-300 border-purple-500/30",
+                    badgeClass: "bg-indigo-950/60 text-indigo-300 border-indigo-800/50",
                     texto: "Planeja ingressar em programas de pós-graduação stricto sensu (mestrado) para aprofundar pesquisas na intersecção entre educação, políticas públicas e direitos humanos."
                 },
                 {
                     perfil: "Professores / Educadores",
-                    badgeClass: "bg-indigo-500/10 text-indigo-300 border-indigo-500/30",
+                    badgeClass: "bg-indigo-950/60 text-indigo-300 border-indigo-800/50",
                     texto: "Enfrenta barreiras relacionadas à falta de recursos estruturais básicos na rede pública, transformando a resiliência diária em compromisso com a transformação social."
                 },
                 {
                     perfil: "Psicologia / Serv. Social",
-                    badgeClass: "bg-emerald-500/10 text-emerald-300 border-emerald-500/30",
+                    badgeClass: "bg-indigo-950/60 text-indigo-300 border-indigo-800/50",
                     texto: "Conduz grupos de apoio psicológico escolar focados em técnicas de regulação emocional, relaxamento e prevenção ativa ao estresse e à ansiedade."
                 },
                 {
                     perfil: "Professores / Educadores",
-                    badgeClass: "bg-indigo-500/10 text-indigo-300 border-indigo-500/30",
+                    badgeClass: "bg-indigo-950/60 text-indigo-300 border-indigo-800/50",
                     texto: "Utiliza ferramentas lúdicas e projetos de direitos humanos para combater o cyberbullying e os impactos nocivos do uso excessivo de telas pelos jovens."
                 },
                 {
                     perfil: "Gestão / Orientação",
-                    badgeClass: "bg-amber-500/10 text-amber-300 border-amber-500/30",
+                    badgeClass: "bg-indigo-950/60 text-indigo-300 border-indigo-800/50",
                     texto: "Defende a inseparabilidade entre clima escolar saudável e sucesso pedagógico, combatendo o assédio moral e valorizando o trabalho colaborativo entre docentes."
                 },
                 {
                     perfil: "Professores / Educadores",
-                    badgeClass: "bg-indigo-500/10 text-indigo-300 border-indigo-500/30",
+                    badgeClass: "bg-indigo-950/60 text-indigo-300 border-indigo-800/50",
                     texto: "Busca apoio e capacitação para lidar com alunos com altas habilidades e transtornos de aprendizagem, garantindo atendimento pedagógico especializado de qualidade."
                 },
                 {
                     perfil: "Outros / Não Especificado",
-                    badgeClass: "bg-purple-500/10 text-purple-300 border-purple-500/30",
+                    badgeClass: "bg-indigo-950/60 text-indigo-300 border-indigo-800/50",
                     texto: "Encaram os desafios da profissão com esperança e união, fundamentando sua trajetória na ética, na empatia e na defesa intransigente de uma educação pública emancipadora."
                 }
             ];
@@ -657,7 +657,7 @@
                     
                     tr.innerHTML = `
                         <td class="px-6 py-4 align-top">
-                            <span class="inline-block px-3 py-1.5 text-xs font-semibold rounded-full border ${item.badgeClass}">
+                            <span class="inline-block px-3 py-1.5 text-xs font-medium rounded-full border ${item.badgeClass}">
                                 ${item.perfil}
                             </span>
                         </td>
@@ -688,4 +688,4 @@
         }
     </script>
 </body>
-</html>
+</html>10:29 25/09/2026
