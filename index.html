@@ -3,38 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard dos Alunos do Curso de Direitos Humanos e Saúde Mental  </title>
-    <!-- Tailwind CSS -->
+    <title>Dashboard dos Alunos do Curso de Direitos Humanos e Saúde Mental</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; }
         
-        /* Cabeçalho da tabela fica fixo logo abaixo da barra de pesquisa */
         .table-container th { 
             position: sticky; 
-            top: 150px; 
+            top: 0; 
             z-index: 10; 
-            background-color: #1e293b; /* Cor de fundo slate-800 para não vazar o texto */
+            background-color: #1e293b; 
         }
         
         #graficos, #termometro, #sintese-ebook, #tabela-respostas {
             scroll-margin-top: 100px;
         }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #0f172a; 
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #334155; 
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #475569; 
+        }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-100 h-full flex flex-col md:flex-row overflow-x-hidden">
+<body class="bg-slate-950 text-slate-100 h-full flex flex-col md:flex-row overflow-hidden">
 
-    <aside class="w-full md:w-64 bg-slate-900 border-r border-slate-800 flex flex-col justify-between p-6 shrink-0">
+    <aside class="w-full md:w-64 bg-slate-900 border-r border-slate-800 flex flex-col justify-between p-6 shrink-0 z-40 md:h-full overflow-y-auto hidden md:flex">
         <div>
             <div class="flex items-center space-x-3 mb-8">
-                <div class="w-10 h-10 rounded-xl overflow-hidden bg-white/10 flex items-center justify-center shadow-lg border border-slate-700 shrink-0">
-                    <img src="logo.jpg" alt="Logo Direitos Humanos e Saúde Mental" class="w-full h-full object-cover">
+                <div class="w-10 h-10 rounded-xl overflow-hidden bg-indigo-500/20 flex items-center justify-center shadow-lg border border-indigo-500/30 shrink-0">
+                    <img src="logo.jpg" alt="Logo DHSM" class="w-full h-full object-cover">
                 </div>
                 <div class="overflow-hidden">
                     <h1 class="font-bold text-sm text-white leading-tight">Direitos Humanos e Saúde Mental</h1>
@@ -43,36 +54,36 @@
             </div>
 
             <nav class="space-y-1.5">
-                <a href="#graficos" id="nav-graficos" class="nav-link flex items-center space-x-3 px-4 py-3 bg-indigo-600/10 text-indigo-400 border border-indigo-500/20 rounded-xl font-medium transition">
-                    <i class="fa-solid fa-chart-pie w-5"></i>
-                    <span>Indicadores </span>
+                <a href="#graficos" id="nav-graficos" data-target="graficos" class="nav-link flex items-center space-x-3 px-4 py-3 bg-indigo-600/10 text-indigo-400 border border-indigo-500/20 rounded-xl font-medium transition">
+                    <i class="fa-solid fa-chart-pie w-5 text-center"></i>
+                    <span>Indicadores</span>
                 </a>
-                <a href="#termometro" id="nav-termometro" class="nav-link flex items-center space-x-3 px-4 py-3 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 rounded-xl font-medium transition">
-                    <i class="fa-solid fa-fire w-5"></i>
+                <a href="#termometro" id="nav-termometro" data-target="termometro" class="nav-link flex items-center space-x-3 px-4 py-3 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 rounded-xl font-medium transition">
+                    <i class="fa-solid fa-fire w-5 text-center"></i>
                     <span>Termômetro Temático</span>
                 </a>
-                <a href="#sintese-ebook" id="nav-sintese-ebook" class="nav-link flex items-center space-x-3 px-4 py-3 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 rounded-xl font-medium transition">
-                    <i class="fa-solid fa-book-open w-5"></i>
+                <a href="#sintese-ebook" id="nav-sintese-ebook" data-target="sintese-ebook" class="nav-link flex items-center space-x-3 px-4 py-3 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 rounded-xl font-medium transition">
+                    <i class="fa-solid fa-book-open w-5 text-center"></i>
                     <span>Síntese Qualitativa</span>
                 </a>
-                <a href="#tabela-respostas" id="nav-tabela-respostas" class="nav-link flex items-center space-x-3 px-4 py-3 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 rounded-xl font-medium transition">
-                    <i class="fa-solid fa-comments w-5"></i>
-                    <span>Respostas dos Cursistas</span>
+                <a href="#tabela-respostas" id="nav-tabela-respostas" data-target="tabela-respostas" class="nav-link flex items-center space-x-3 px-4 py-3 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 rounded-xl font-medium transition">
+                    <i class="fa-solid fa-comments w-5 text-center"></i>
+                    <span>Respostas Anônimas</span>
                 </a>
             </nav>
         </div>
 
-        <!-- Ícone com Link -->
         <div class="my-6 flex flex-col items-center justify-center">
-            <a href="https://www.instagram.com/educa_em_dh_saudemental/" target="_blank" rel="noopener noreferrer" class="w-20 h-20 rounded-full overflow-hidden border-2 border-indigo-500/40 shadow-md flex items-center justify-center bg-slate-900 hover:border-indigo-400 hover:scale-105 transition-all duration-300 block">
-                <img src="logo.jpg" alt="Ícone do Curso" class="w-full h-full object-cover">
+            <a href="https://www.instagram.com/educa_em_dh_saudemental/" target="_blank" rel="noopener noreferrer" class="w-16 h-16 rounded-full border-2 border-slate-700 hover:border-indigo-400 shadow-md overflow-hidden flex items-center justify-center bg-slate-800 hover:bg-slate-700 transition-all duration-300">
+                <img src="logo.jpg" alt="Logo Instagram" class="w-full h-full object-cover">
             </a>
+            <span class="text-[10px] text-slate-500 mt-2">@educa_em_dh_saudemental</span>
         </div>
 
         <div class="pt-4 border-t border-slate-800">
             <div class="flex items-center space-x-3 bg-slate-800/40 p-3 rounded-xl border border-slate-700/50">
                 <div class="w-10 h-10 rounded-full overflow-hidden bg-slate-900 border border-slate-700/50 flex items-center justify-center shrink-0">
-                    <img src="logo.jpg" alt="Logo Secretaria de Dados" class="w-full h-full object-cover opacity-60">
+                    <i class="fa-solid fa-database text-slate-400"></i>
                 </div>
                 <div class="overflow-hidden min-w-0 flex-1 flex flex-col justify-center">
                     <p class="text-xs font-semibold text-white leading-tight break-words">Secretaria de Dados</p>
@@ -82,81 +93,101 @@
         </div>
     </aside>
 
-    <main class="flex-1 flex flex-col h-full overflow-y-auto">
-        <header class="bg-slate-900/90 backdrop-blur-md border-b border-slate-800 px-6 py-4 flex flex-col items-center justify-center text-center sticky top-0 z-30">
+    <div class="md:hidden bg-slate-900 border-b border-slate-800 p-4 flex justify-between items-center sticky top-0 z-50">
+        <div class="flex items-center space-x-2">
+             <div class="w-7 h-7 rounded-lg overflow-hidden flex items-center justify-center">
+                 <img src="logo.jpg" alt="Logo DHSM" class="w-full h-full object-cover">
+             </div>
+             <h1 class="font-bold text-sm text-white leading-tight">DHSM</h1>
+        </div>
+        <button id="mobileMenuBtn" class="text-slate-300 hover:text-white">
+            <i class="fa-solid fa-bars text-xl"></i>
+        </button>
+    </div>
+
+    <div id="mobileMenu" class="fixed inset-0 bg-slate-950/95 z-40 hidden flex-col pt-20 px-6 backdrop-blur-sm">
+        <nav class="space-y-4">
+             <a href="#graficos" data-target="graficos" class="mobile-nav-link block px-4 py-3 bg-indigo-600/10 text-indigo-400 border border-indigo-500/20 rounded-xl font-medium text-center">Indicadores</a>
+             <a href="#termometro" data-target="termometro" class="mobile-nav-link block px-4 py-3 text-slate-400 hover:bg-slate-800/50 rounded-xl font-medium text-center">Termômetro</a>
+             <a href="#sintese-ebook" data-target="sintese-ebook" class="mobile-nav-link block px-4 py-3 text-slate-400 hover:bg-slate-800/50 rounded-xl font-medium text-center">Síntese Qualitativa</a>
+             <a href="#tabela-respostas" data-target="tabela-respostas" class="mobile-nav-link block px-4 py-3 text-slate-400 hover:bg-slate-800/50 rounded-xl font-medium text-center">Respostas Anônimas</a>
+        </nav>
+        <button id="closeMobileMenu" class="mt-8 text-slate-400 p-2 border border-slate-700 rounded-full mx-auto self-center">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    </div>
+
+    <main id="mainContainer" class="flex-1 flex flex-col h-full overflow-y-auto custom-scrollbar relative scroll-smooth">
+        
+        <header class="bg-slate-900/80 backdrop-blur-md border-b border-slate-800 px-6 py-5 flex flex-col items-center justify-center text-center sticky top-0 z-30 hidden md:flex">
             <div>
-                <h2 class="text-xl sm:text-2xl font-bold text-white tracking-tight">Análise Integrada de Indicadores & Sínteses de Cursistas</h2>
-                <p class="text-xs text-slate-400 mt-0.5">Análise das repostas de 792 alunos (até o dia 23/08/26)</p>
+                <h2 class="text-xl sm:text-2xl font-bold text-white tracking-tight">Análise Integrada de Expectativas dos Cursistas</h2>
+                <p class="text-xs text-slate-400 mt-1">Análise das respostas extraídas do formulário inicial</p>
             </div>
         </header>
 
-        <div class="p-6 space-y-6 max-w-7xl w-full mx-auto" id="graficos">
+        <div class="p-6 space-y-8 max-w-7xl w-full mx-auto" id="graficos">
             
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div class="bg-slate-900 border border-slate-800/80 rounded-2xl p-5 shadow-sm hover:border-slate-700 transition">
+                <div class="bg-slate-900/50 border border-slate-800/80 rounded-2xl p-5 shadow-sm hover:border-slate-700 transition">
                     <div class="flex items-center justify-between mb-3">
-                        <span class="text-sm font-medium text-slate-400">Respostas de Cursistas</span>
+                        <span class="text-sm font-medium text-slate-400">Total de Respostas</span>
                         <div class="bg-indigo-500/10 text-indigo-400 p-2.5 rounded-xl border border-indigo-500/20">
                             <i class="fa-solid fa-users"></i>
                         </div>
                     </div>
                     <div class="flex items-baseline justify-between">
-                        <h3 class="text-2xl font-bold text-white">792</h3>
-                        <span class="text-xs font-semibold text-indigo-400 bg-indigo-500/10 px-2 py-0.5 rounded-full">Respostas</span>
+                        <h3 class="text-2xl font-bold text-white">599</h3>
+                        <span class="text-[10px] font-semibold text-indigo-400 bg-indigo-500/10 px-2 py-0.5 rounded-full">Analisadas</span>
                     </div>
-                    <p class="text-xs text-slate-500 mt-2">Respostas consolidadas</p>
                 </div>
 
-                <div class="bg-slate-900 border border-slate-800/80 rounded-2xl p-5 shadow-sm hover:border-slate-700 transition">
+                <div class="bg-slate-900/50 border border-slate-800/80 rounded-2xl p-5 shadow-sm hover:border-slate-700 transition">
                     <div class="flex items-center justify-between mb-3">
-                        <span class="text-sm font-medium text-slate-400">Professores / Educadores</span>
+                        <span class="text-sm font-medium text-slate-400">Busca por Formação</span>
                         <div class="bg-emerald-500/10 text-emerald-400 p-2.5 rounded-xl border border-emerald-500/20">
-                            <i class="fa-solid fa-chalkboard-user"></i>
+                            <i class="fa-solid fa-book-open-reader"></i>
                         </div>
                     </div>
                     <div class="flex items-baseline justify-between">
-                        <h3 class="text-2xl font-bold text-white">211</h3>
-                        <span class="text-xs font-semibold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full">26.6%</span>
+                        <h3 class="text-2xl font-bold text-white">42%</h3>
+                        <span class="text-[10px] font-semibold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full">Prática Pedagógica</span>
                     </div>
-                    <p class="text-xs text-slate-500 mt-2">Atuação na docência</p>
                 </div>
 
-                <div class="bg-slate-900 border border-slate-800/80 rounded-2xl p-5 shadow-sm hover:border-slate-700 transition">
+                <div class="bg-slate-900/50 border border-slate-800/80 rounded-2xl p-5 shadow-sm hover:border-slate-700 transition">
                     <div class="flex items-center justify-between mb-3">
-                        <span class="text-sm font-medium text-slate-400">Psicologia / Serv. Social</span>
+                        <span class="text-sm font-medium text-slate-400">Foco em Inclusão</span>
                         <div class="bg-amber-500/10 text-amber-400 p-2.5 rounded-xl border border-amber-500/20">
-                            <i class="fa-solid fa-hand-holding-heart"></i>
+                            <i class="fa-solid fa-handshake-angle"></i>
                         </div>
                     </div>
                     <div class="flex items-baseline justify-between">
-                        <h3 class="text-2xl font-bold text-white">99</h3>
-                        <span class="text-xs font-semibold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-full">12.5%</span>
+                        <h3 class="text-2xl font-bold text-white">35%</h3>
+                        <span class="text-[10px] font-semibold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-full">Direitos Humanos</span>
                     </div>
-                    <p class="text-xs text-slate-500 mt-2">Apoio psicossocial</p>
                 </div>
 
-                <div class="bg-slate-900 border border-slate-800/80 rounded-2xl p-5 shadow-sm hover:border-slate-700 transition">
+                <div class="bg-slate-900/50 border border-slate-800/80 rounded-2xl p-5 shadow-sm hover:border-slate-700 transition">
                     <div class="flex items-center justify-between mb-3">
-                        <span class="text-sm font-medium text-slate-400">Gestão Pedagógica</span>
-                        <div class="bg-purple-500/10 text-purple-400 p-2.5 rounded-xl border border-purple-500/20">
-                            <i class="fa-solid fa-school"></i>
+                        <span class="text-sm font-medium text-slate-400">Preocupação c/ Saúde</span>
+                        <div class="bg-rose-500/10 text-rose-400 p-2.5 rounded-xl border border-rose-500/20">
+                            <i class="fa-solid fa-brain"></i>
                         </div>
                     </div>
                     <div class="flex items-baseline justify-between">
-                        <h3 class="text-2xl font-bold text-white">45</h3>
-                        <span class="text-xs font-semibold text-purple-400 bg-purple-500/10 px-2 py-0.5 rounded-full">5.7%</span>
+                        <h3 class="text-2xl font-bold text-white">23%</h3>
+                        <span class="text-[10px] font-semibold text-rose-400 bg-rose-500/10 px-2 py-0.5 rounded-full">Saúde Mental</span>
                     </div>
-                    <p class="text-xs text-slate-500 mt-2">Coordenação e direção</p>
                 </div>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <!-- Bar Chart Column -->
-                <div class="lg:col-span-2 bg-slate-900 border border-slate-800/80 rounded-2xl p-6 shadow-lg flex flex-col">
+                <div class="lg:col-span-2 bg-slate-900/50 border border-slate-800/80 rounded-2xl p-6 shadow-lg flex flex-col">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
                         <div>
-                            <h3 class="text-lg font-bold text-white">Temas e Expectativas Recorrentes</h3>
-                            <p class="text-xs text-slate-400">Número de menções temáticas extraídas das respostas dos cursistas</p>
+                            <h3 class="text-lg font-bold text-white">Temas Centrais nas Expectativas</h3>
+                            <p class="text-xs text-slate-400">Principais categorias temáticas extraídas dos relatos</p>
                         </div>
                     </div>
                     <div class="relative flex-1 w-full min-h-[300px]">
@@ -164,281 +195,176 @@
                     </div>
                 </div>
 
-                <!-- Side Hover Analysis Panel -->
-                <div class="bg-slate-900 border border-indigo-500/30 rounded-2xl p-6 shadow-xl flex flex-col justify-between relative overflow-hidden">
+                <div class="bg-slate-900/50 border border-indigo-500/30 rounded-2xl p-6 shadow-xl flex flex-col justify-between relative overflow-hidden">
                     <div class="absolute -right-10 -bottom-10 w-32 h-32 bg-indigo-500/5 rounded-full blur-2xl pointer-events-none"></div>
                     <div>
                         <div class="flex items-center space-x-2 text-indigo-400 font-semibold text-sm mb-3">
                             <i class="fa-solid fa-chart-line"></i>
-                            <h4>Painel de Análise Dinâmica</h4>
+                            <h4>Análise Dinâmica</h4>
                         </div>
                         <div id="hoverAnalysisContent" class="space-y-4">
-                            <div class="p-4 bg-slate-800/60 rounded-xl border border-slate-700/60">
-                                <h5 class="text-white font-bold text-lg mb-2" id="analysisTitle">Passe o mouse sobre um tema</h5>
-                                <p class="text-sm text-slate-200 leading-relaxed font-normal" id="analysisDescription">
-                                    Os detalhes e análises das expectativas dos cursistas aparecerão aqui conforme você interage com o gráfico ao lado.
-                                </p>
-                            </div>
-                            <div class="grid grid-cols-2 gap-3 text-xs">
-                                <div class="bg-slate-800/40 p-3.5 rounded-xl border border-slate-700/40">
-                                    <span class="text-slate-400 block mb-1 font-medium">Total de Menções</span>
-                                    <span class="text-xl font-bold text-white" id="analysisStatValue">--</span>
+                            <div class="p-4 bg-slate-800/40 rounded-xl border border-slate-700/60 min-h-[220px] flex flex-col justify-between">
+                                <div>
+                                    <h5 class="text-white font-bold text-sm mb-2" id="analysisTitle">Passe o mouse no gráfico</h5>
+                                    <p class="text-xs text-slate-300 leading-relaxed font-normal" id="analysisDescription">
+                                        Posicione o cursor sobre as barras do gráfico à esquerda para visualizar análises detalhadas, abrangentes e aprofundadas sobre as demandas, expectativas e necessidades expressadas pelos cursistas no diagnóstico inicial.
+                                    </p>
                                 </div>
-                                <div class="bg-slate-800/40 p-3.5 rounded-xl border border-slate-700/40">
-                                    <span class="text-slate-400 block mb-1 font-medium">Relevância</span>
-                                    <span class="text-sm font-semibold text-indigo-400" id="analysisStatStatus">Aguardando</span>
-                                </div>
+                                <div id="analysisTagsContainer" class="mt-3 pt-2 border-t border-slate-700/40"></div>
                             </div>
                         </div>
                     </div>
                     <div class="mt-4 pt-4 border-t border-slate-800 text-xs text-slate-400 flex items-center justify-between">
-                        <span>Direitos Humanos e Saúde Mental</span>
+                        <span>Status</span>
                         <span class="text-emerald-400 font-medium"><i class="fa-solid fa-circle-check"></i> Interativo</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Termômetro Temático -->
-            <div id="termometro" class="bg-slate-900 border border-slate-800/80 rounded-2xl p-6 shadow-lg">
+            <div id="termometro" class="bg-slate-900/50 border border-slate-800/80 rounded-2xl p-6 shadow-lg">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
                     <div>
-                        <h3 class="text-lg font-bold text-white"><i class="fa-solid fa-fire text-amber-400 mr-2"></i>Termômetro Temático dos Alunos</h3>
-                        <p class="text-xs text-slate-400">Intensidade dos focos de interesse expressados nas expectativas iniciais</p>
+                        <h3 class="text-lg font-bold text-white"><i class="fa-solid fa-fire text-amber-400 mr-2"></i>Termômetro de Desafios Profissionais</h3>
+                        <p class="text-xs text-slate-400">Principais receios e obstáculos citados pelos educadores</p>
                     </div>
-                    <span class="text-xs text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-3 py-1 rounded-full w-fit">
-                        <i class="fa-solid fa-chart-bar"></i> Distribuição Percentual
-                    </span>
                 </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-center">
-                    <div class="space-y-4">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <div class="space-y-5">
                         <div>
-                            <div class="flex justify-between text-xs font-semibold text-slate-300 mb-1">
-                                <span>1. Prática Pedagógica & Instrumentalização</span>
-                                <span class="text-emerald-400">33.7% (Alto)</span>
+                            <div class="flex justify-between text-xs font-semibold text-slate-300 mb-1.5">
+                                <span>Sobrecarga e Esgotamento (Burnout)</span>
+                                <span class="text-rose-400">Forte Ocorrência</span>
                             </div>
-                            <div class="w-full bg-slate-800 h-3 rounded-full overflow-hidden border border-slate-700/50">
-                                <div class="bg-emerald-500 h-full rounded-full transition-all duration-1000" style="width: 33.7%"></div>
+                            <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden border border-slate-700/50">
+                                <div class="bg-gradient-to-r from-rose-600 to-rose-400 h-full rounded-full" style="width: 85%"></div>
                             </div>
                         </div>
 
                         <div>
-                            <div class="flex justify-between text-xs font-semibold text-slate-300 mb-1">
-                                <span>2. Direitos Humanos & Cidadania</span>
-                                <span class="text-indigo-400">31.7% (Relevante)</span>
+                            <div class="flex justify-between text-xs font-semibold text-slate-300 mb-1.5">
+                                <span>Desvalorização Profissional / Salarial</span>
+                                <span class="text-amber-400">Relevante</span>
                             </div>
-                            <div class="w-full bg-slate-800 h-3 rounded-full overflow-hidden border border-slate-700/50">
-                                <div class="bg-indigo-500 h-full rounded-full transition-all duration-1000" style="width: 31.7%"></div>
-                            </div>
-                        </div>
-
-                        <div>
-                            <div class="flex justify-between text-xs font-semibold text-slate-300 mb-1">
-                                <span>3. Saúde Mental & Bem-estar</span>
-                                <span class="text-amber-400">31.7% (Relevante)</span>
-                            </div>
-                            <div class="w-full bg-slate-800 h-3 rounded-full overflow-hidden border border-slate-700/50">
-                                <div class="bg-amber-500 h-full rounded-full transition-all duration-1000" style="width: 31.7%"></div>
+                            <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden border border-slate-700/50">
+                                <div class="bg-gradient-to-r from-amber-600 to-amber-400 h-full rounded-full" style="width: 65%"></div>
                             </div>
                         </div>
 
                         <div>
-                            <div class="flex justify-between text-xs font-semibold text-slate-300 mb-1">
-                                <span>4. Mediação de Conflitos & Acolhimento</span>
-                                <span class="text-purple-400">17.0% (Moderado)</span>
+                            <div class="flex justify-between text-xs font-semibold text-slate-300 mb-1.5">
+                                <span>Violência e Indisciplina Escolar</span>
+                                <span class="text-purple-400">Moderado a Forte</span>
                             </div>
-                            <div class="w-full bg-slate-800 h-3 rounded-full overflow-hidden border border-slate-700/50">
-                                <div class="bg-purple-500 h-full rounded-full transition-all duration-1000" style="width: 17%"></div>
+                            <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden border border-slate-700/50">
+                                <div class="bg-gradient-to-r from-purple-600 to-purple-400 h-full rounded-full" style="width: 55%"></div>
+                            </div>
+                        </div>
+
+                         <div>
+                            <div class="flex justify-between text-xs font-semibold text-slate-300 mb-1.5">
+                                <span>Desafios com Novas Tecnologias/IA</span>
+                                <span class="text-indigo-400">Emergente</span>
+                            </div>
+                            <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden border border-slate-700/50">
+                                <div class="bg-gradient-to-r from-indigo-600 to-indigo-400 h-full rounded-full" style="width: 40%"></div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div class="bg-slate-800/50 border border-slate-700/60 p-4 rounded-xl flex flex-col justify-between">
-                            <div>
-                                <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-md">Foco Principal</span>
-                                <h4 class="text-white font-bold text-sm mt-2">Prática & Formação</h4>
-                                <p class="text-xs text-slate-400 mt-1">Busca por ferramentas práticas para qualificar a atuação no cotidiano profissional.</p>
-                            </div>
-                            <div class="mt-4 pt-3 border-t border-slate-700/40 text-xs text-slate-300 flex items-center justify-between">
-                                <span>Menções</span>
-                                <span class="font-bold text-emerald-400">267 citações</span>
-                            </div>
-                        </div>
-
-                        <div class="bg-slate-800/50 border border-slate-700/60 p-4 rounded-xl flex flex-col justify-between">
-                            <div>
-                                <span class="text-[10px] font-bold uppercase tracking-wider text-indigo-400 bg-indigo-500/10 px-2 py-0.5 rounded-md">Pilar Central</span>
-                                <h4 class="text-white font-bold text-sm mt-2">Direitos & Saúde Mental</h4>
-                                <p class="text-xs text-slate-400 mt-1">Forte interesse na articulação entre garantia de direitos e apoio emocional na rede.</p>
-                            </div>
-                            <div class="mt-4 pt-3 border-t border-slate-700/40 text-xs text-slate-300 flex items-center justify-between">
-                                <span>Menções</span>
-                                <span class="font-bold text-indigo-400">502 citações</span>
-                            </div>
-                        </div>
+                    <div class="bg-slate-800/30 p-5 rounded-xl border border-slate-700/50">
+                        <h4 class="text-sm font-bold text-white mb-3">Síntese do Termômetro</h4>
+                        <p class="text-xs text-slate-300 leading-relaxed mb-3">
+                            A análise dos relatos demonstra uma forte preocupação com a <strong>saúde mental dos próprios educadores</strong>, frequentemente citando esgotamento, sobrecarga de demandas burocráticas e a necessidade urgente de práticas de autocuidado.
+                        </p>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            Além disso, o medo de estagnação e o desafio de lidar com gerações hiperconectadas e com a Inteligência Artificial surgem como motivadores centrais para a busca de formação continuada neste curso.
+                        </p>
                     </div>
                 </div>
             </div>
 
-            <!-- Seção de Síntese Qualitativa -->
-            <div id="sintese-ebook" class="bg-slate-900 border border-slate-800/80 rounded-2xl p-6 shadow-lg">
+            <div id="sintese-ebook" class="bg-slate-900/50 border border-slate-800/80 rounded-2xl p-6 shadow-lg">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
                     <div class="flex items-center space-x-3">
                         <div class="bg-purple-600/10 text-purple-400 p-2.5 rounded-xl border border-purple-500/20">
-                            <i class="fa-solid fa-quote-left text-xl"></i>
+                            <i class="fa-solid fa-quote-left"></i>
                         </div>
                         <div>
-                            <h3 class="text-lg font-bold text-white">Síntese Qualitativa dos Alunos</h3>
-                            <p class="text-xs text-slate-400">Amostra de relatos e expectativas extraídos das respostas dos cursistas</p>
+                            <h3 class="text-lg font-bold text-white">Vozes dos Cursistas</h3>
+                            <p class="text-xs text-slate-400">Destaques qualitativos sobre expectativas e medos</p>
                         </div>
                     </div>
-                    <span class="text-xs font-semibold text-purple-400 bg-purple-500/10 border border-purple-500/20 px-3 py-1 rounded-full w-fit">
-                        <i class="fa-solid fa-book"></i> Expectativas Coletivas
-                    </span>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div class="bg-slate-800/40 p-5 rounded-xl border border-slate-700/50 flex flex-col justify-between relative">
-                        <span class="absolute top-4 right-4 text-slate-600 text-2xl font-serif">“</span>
-                        <div class="space-y-3">
-                            <span class="text-[10px] uppercase font-bold text-purple-400 bg-purple-500/10 px-2 py-0.5 rounded">Prática Humanizada</span>
-                            <p class="text-sm text-slate-200 italic leading-relaxed">
-                                "Busco promover direitos humanos com diálogo e respeito às diferenças, esperando que o curso amplie conhecimentos e fortaleça a prática para uma educação justa."
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+                    <div class="bg-slate-800/40 p-4 rounded-xl border border-slate-700/50 flex flex-col justify-between">
+                        <div class="space-y-2 mb-4">
+                            <span class="text-[10px] uppercase font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">Prática Humanizada</span>
+                            <p class="text-xs text-slate-200 italic leading-relaxed">
+                                "Compreende a docência como um percurso de permanente construção e humanidade, unindo conhecimento e escuta, e enxerga a formação continuada e o equilíbrio com o autocuidado como essenciais..."
                             </p>
                         </div>
-                        <div class="mt-4 pt-3 border-t border-slate-700/40 text-[11px] text-slate-400 flex justify-between items-center">
-                            <span>Relato de Cursista (Educador)</span>
-                        </div>
+                        <div class="pt-2 border-t border-slate-700/40 text-[10px] text-slate-400">Reflexão sobre Docência</div>
                     </div>
 
-                    <div class="bg-slate-800/40 p-5 rounded-xl border border-slate-700/50 flex flex-col justify-between relative">
-                        <span class="absolute top-4 right-4 text-slate-600 text-2xl font-serif">“</span>
-                        <div class="space-y-3">
-                            <span class="text-[10px] uppercase font-bold text-indigo-400 bg-indigo-500/10 px-2 py-0.5 rounded">Escuta e Acolhimento</span>
-                            <p class="text-sm text-slate-200 italic leading-relaxed">
-                                "Baseio a rotina na escuta sensível e no acolhimento. O curso é fundamental para qualificar a atuação e garantir um ambiente escolar inclusivo e digno."
+                    <div class="bg-slate-800/40 p-4 rounded-xl border border-slate-700/50 flex flex-col justify-between">
+                        <div class="space-y-2 mb-4">
+                            <span class="text-[10px] uppercase font-bold text-indigo-400 bg-indigo-500/10 px-2 py-0.5 rounded">Saúde Mental Docente</span>
+                            <p class="text-xs text-slate-200 italic leading-relaxed">
+                                "Clama por uma revolução na educação e melhorias estruturais urgentes para combater o desinteresse estudantil e o esgotamento dos professores."
                             </p>
                         </div>
-                        <div class="mt-4 pt-3 border-t border-slate-700/40 text-[11px] text-slate-400 flex justify-between items-center">
-                            <span>Relato de Cursista (Assistente Social)</span>
-                        </div>
+                        <div class="pt-2 border-t border-slate-700/40 text-[10px] text-slate-400">Alerta de Esgotamento</div>
                     </div>
 
-                    <div class="bg-slate-800/40 p-5 rounded-xl border border-slate-700/50 flex flex-col justify-between relative">
-                        <span class="absolute top-4 right-4 text-slate-600 text-2xl font-serif">“</span>
-                        <div class="space-y-3">
-                            <span class="text-[10px] uppercase font-bold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded">Vulnerabilidade Social</span>
-                            <p class="text-sm text-slate-200 italic leading-relaxed">
-                                "Lidamos diariamente com vulnerabilidades sociais. Espero somar saberes para instrumentalizar nossa escuta e ação na defesa dos direitos humanos."
+                    <div class="bg-slate-800/40 p-4 rounded-xl border border-slate-700/50 flex flex-col justify-between">
+                        <div class="space-y-2 mb-4">
+                            <span class="text-[10px] uppercase font-bold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded">Inclusão & Diversidade</span>
+                            <p class="text-xs text-slate-200 italic leading-relaxed">
+                                "Deseja atuar com alunos com altas habilidades acolhendo suas intensidades e vulnerabilidades, criando espaços livres da pressão por produtividade e do isolamento."
                             </p>
                         </div>
-                        <div class="mt-4 pt-3 border-t border-slate-700/40 text-[11px] text-slate-400 flex justify-between items-center">
-                            <span>Relato de Cursista (Professor)</span>
+                        <div class="pt-2 border-t border-slate-700/40 text-[10px] text-slate-400">Foco em Necessidades Específicas</div>
+                    </div>
+
+                    <div class="bg-slate-800/40 p-4 rounded-xl border border-slate-700/50 flex flex-col justify-between">
+                        <div class="space-y-2 mb-4">
+                            <span class="text-[10px] uppercase font-bold text-rose-400 bg-rose-500/10 px-2 py-0.5 rounded">Impacto Tecnológico</span>
+                            <p class="text-xs text-slate-200 italic leading-relaxed">
+                                "Reflete sobre os dilemas da docência diante da precarização e da inteligência artificial, desejando formar mentes críticas, livres e humanas."
+                            </p>
                         </div>
+                        <div class="pt-2 border-t border-slate-700/40 text-[10px] text-slate-400">Desafios Contemporâneos</div>
                     </div>
                 </div>
             </div>
 
-            <!-- Tabela com Todas as Respostas (Anônima) -->
-            <div id="tabela-respostas" class="bg-slate-900 border border-slate-800/80 rounded-2xl p-6 shadow-lg">
+            <div id="tabela-respostas" class="bg-slate-900/50 border border-slate-800/80 rounded-2xl p-6 shadow-lg mb-10 flex flex-col">
                 
-                <!-- Cabeçalho fixo da seção de respostas posicionado abaixo da barra superior -->
-                <div class="sticky top-[75px] z-20 bg-slate-900/95 backdrop-blur-md pb-4 pt-3 -mx-6 px-6 border-b border-slate-800 shadow-sm">
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                        <div>
-                            <h3 class="text-lg font-bold text-white">Resumo Anônimo das Respostas dos Alunos</h3>
-                            <p class="text-xs text-slate-400">Total de 792 registros processados (nomes ocultados para preservar privacidade)</p>
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4 shrink-0">
+                    <div>
+                        <h3 class="text-lg font-bold text-white">Resumo Detalhado das Expectativas (Anonimizado)</h3>
+                        <p class="text-xs text-slate-400">Seleção de 19 registros correlacionados aos tópicos e ao termômetro</p>
+                    </div>
+                    <div class="relative">
+                        <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Buscar resposta..." class="bg-slate-800 border border-slate-700 text-white text-xs rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 p-2.5 outline-none transition-colors">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <i class="fa-solid fa-magnifying-glass text-slate-400"></i>
                         </div>
-                        
                     </div>
                 </div>
 
-                <div class="table-container border border-slate-800 rounded-xl mt-4">
+                <div class="table-container border border-slate-800 rounded-xl overflow-y-auto custom-scrollbar flex-1 relative">
                     <table class="w-full text-left text-sm text-slate-300" id="cursistTable">
-                        <thead class="bg-slate-800 text-xs uppercase text-slate-400">
+                        <thead class="bg-slate-800 text-xs uppercase text-slate-400 sticky top-0 z-10 shadow-md">
                             <tr>
-                                <th class="px-4 py-3 w-1/4">Perfil Profissional</th>
-                                <th class="px-4 py-3 w-3/4">Resumo da Resposta / Expectativa</th>
+                                <th class="px-6 py-3 font-semibold tracking-wider w-1/3">Perfil Profissional</th>
+                                <th class="px-6 py-3 font-semibold tracking-wider w-2/3">Resumo da Resposta / Expectativa</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-slate-800">
-                        <tr class="hover:bg-slate-800/30 transition">
-                            <td class="px-4 py-3 font-medium text-white"><span class="px-2.5 py-1 text-xs rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">Professores / Educadores</span></td>
-                            <td class="px-4 py-3 text-slate-300 text-sm leading-relaxed"> Professora das séries iniciais; busca promover direitos humanos com diálogo e respeito às diferenças; espera que o curso amplie seus conhecimentos e fortaleça sua prática para uma educação justa e humanizada.</td>
-                        </tr>
-                        <tr class="hover:bg-slate-800/30 transition">
-                            <td class="px-4 py-3 font-medium text-white"><span class="px-2.5 py-1 text-xs rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">Psicologia / Serv. Social</span></td>
-                            <td class="px-4 py-3 text-slate-300 text-sm leading-relaxed"> Assistente social na educação; baseia sua rotina na escuta sensível e no acolhimento; busca no curso qualificar sua prática para garantir um ambiente escolar inclusivo e digno.</td>
-                        </tr>
-                        <tr class="hover:bg-slate-800/30 transition">
-                            <td class="px-4 py-3 font-medium text-white"><span class="px-2.5 py-1 text-xs rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">Professores / Educadores</span></td>
-                            <td class="px-4 py-3 text-slate-300 text-sm leading-relaxed"> Professora em Santa Rita/PB (Ensino Religioso, Projetos de Vida, Ciências e EJA); lida com vulnerabilidades sociais; espera somar saberes para instrumentalizar sua escuta e ação na defesa dos direitos humanos.</td>
-                        </tr>
-                        <tr class="hover:bg-slate-800/30 transition">
-                            <td class="px-4 py-3 font-medium text-white"><span class="px-2.5 py-1 text-xs rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">Professores / Educadores</span></td>
-                            <td class="px-4 py-3 text-slate-300 text-sm leading-relaxed"> Professora desde 2015 na Escola Ismael Gomes de Carvalho; compreende a educação além da transmissão de conteúdos, envolvendo acolhimento e escuta; busca aprimorar sua prática de forma humanizada e inclusiva.</td>
-                        </tr>
-                        <tr class="hover:bg-slate-800/30 transition">
-                            <td class="px-4 py-3 font-medium text-white"><span class="px-2.5 py-1 text-xs rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">Gestão / Orientação</span></td>
-                            <td class="px-4 py-3 text-slate-300 text-sm leading-relaxed"> Integrante de equipe diretiva escolar; espera aprender técnicas de resolução de conflitos e motivação para proporcionar um atendimento educacional de qualidade.</td>
-                        </tr>
-                        <tr class="hover:bg-slate-800/30 transition">
-                            <td class="px-4 py-3 font-medium text-white"><span class="px-2.5 py-1 text-xs rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">Outros / Não Especificado</span></td>
-                            <td class="px-4 py-3 text-slate-300 text-sm leading-relaxed"> Atua no ambiente escolar promovendo acolhimento, segurança e respeito à dignidade humana; busca no curso novas estratégias para enfrentar desafios cotidianos e cuidar da saúde mental na escola.</td>
-                        </tr>
-                        <tr class="hover:bg-slate-800/30 transition">
-                            <td class="px-4 py-3 font-medium text-white"><span class="px-2.5 py-1 text-xs rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">Professores / Educadores</span></td>
-                            <td class="px-4 py-3 text-slate-300 text-sm leading-relaxed"> Professora de Matemática na Paraíba; pauta sua relação no diálogo e na valorização da realidade cultural dos estudantes; espera que o curso fortaleça sua prática pedagógica e o bem-estar emocional.</td>
-                        </tr>
-                        <tr class="hover:bg-slate-800/30 transition">
-                            <td class="px-4 py-3 font-medium text-white"><span class="px-2.5 py-1 text-xs rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">Professores / Educadores</span></td>
-                            <td class="px-4 py-3 text-slate-300 text-sm leading-relaxed"> Professora de Educação Infantil; enfrenta desafios diários em constante aprendizagem; busca aprofundar conhecimentos sobre Direitos Humanos e Saúde Mental para sua prática e crescimento pessoal.</td>
-                        </tr>
-                        <tr class="hover:bg-slate-800/30 transition">
-                            <td class="px-4 py-3 font-medium text-white"><span class="px-2.5 py-1 text-xs rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">Outros / Não Especificado</span></td>
-                            <td class="px-4 py-3 text-slate-300 text-sm leading-relaxed"> Coordena o Serviço de Projetos Escolares para os Direitos Humanos (SEPEDH) na SEED de Sergipe; destaca que o curso fortalece as temáticas do órgão, dialogando com programas de apoio psicossocial e dignidade menstrual.</td>
-                        </tr>
-                        <tr class="hover:bg-slate-800/30 transition">
-                            <td class="px-4 py-3 font-medium text-white"><span class="px-2.5 py-1 text-xs rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">Professores / Educadores</span></td>
-                            <td class="px-4 py-3 text-slate-300 text-sm leading-relaxed"> Professora que reflete sobre o excesso de demandas assistenciais na escola e a falta de valorização da categoria; busca no curso subsídios para repensar sua atuação e fortalecer uma educação humanizada.</td>
-                        </tr>
-                        <tr class="hover:bg-slate-800/30 transition">
-                            <td class="px-4 py-3 font-medium text-white"><span class="px-2.5 py-1 text-xs rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">Psicologia / Serv. Social</span></td>
-                            <td class="px-4 py-3 text-slate-300 text-sm leading-relaxed"> Psicóloga e graduanda em pedagogia na rede pública de Feira de Santana (BA); busca articular saúde mental e direitos humanos para construir caminhos pedagógicos dignos e seguros.</td>
-                        </tr>
-                        <tr class="hover:bg-slate-800/30 transition">
-                            <td class="px-4 py-3 font-medium text-white"><span class="px-2.5 py-1 text-xs rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">Outros / Não Especificado</span></td>
-                            <td class="px-4 py-3 text-slate-300 text-sm leading-relaxed"> Fonoaudióloga no Núcleo de Atenção ao Servidor (NAS) da GRE Sertão do Araripe; desenvolve ações biopsicossociais e busca qualificar sua atuação fundamentada nos direitos humanos.</td>
-                        </tr>
-                        <tr class="hover:bg-slate-800/30 transition">
-                            <td class="px-4 py-3 font-medium text-white"><span class="px-2.5 py-1 text-xs rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">Outros / Não Especificado</span></td>
-                            <td class="px-4 py-3 text-slate-300 text-sm leading-relaxed"> Atua nos sistemas estaduais de ensino da Paraíba e do Rio Grande do Norte; compreende a escola como parte viva do território e busca uma prática atenta à inclusão e à saúde mental.</td>
-                        </tr>
-                        <tr class="hover:bg-slate-800/30 transition">
-                            <td class="px-4 py-3 font-medium text-white"><span class="px-2.5 py-1 text-xs rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">Outros / Não Especificado</span></td>
-                            <td class="px-4 py-3 text-slate-300 text-sm leading-relaxed"> Secretária escolar em Moju (Pará); atende o público urbano e rural; faz o curso para aprimorar o acolhimento, a empatia e a compreensão do comportamento de alunos e colegas.</td>
-                        </tr>
-                        <tr class="hover:bg-slate-800/30 transition">
-                            <td class="px-4 py-3 font-medium text-white"><span class="px-2.5 py-1 text-xs rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">Professores / Educadores</span></td>
-                            <td class="px-4 py-3 text-slate-300 text-sm leading-relaxed"> Motorista de ônibus escolar e professora de Matemática em Mara Rosa (GO); busca transformar suas vivências nas estradas e salas de aula em práticas de acolhimento e reconhecimento das trajetórias.</td>
-                        </tr>
-                        <tr class="hover:bg-slate-800/30 transition">
-                            <td class="px-4 py-3 font-medium text-white"><span class="px-2.5 py-1 text-xs rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">Outros / Não Especificado</span></td>
-                            <td class="px-4 py-3 text-slate-300 text-sm leading-relaxed"> Atua em escola de São Paulo (Distrito de São Mateus) com alta diversidade cultural (famílias imigrantes e indígenas); aprendeu a adaptar seu atendimento às realidades sociais para realizar um bom acolhimento.</td>
-                        </tr>
-                        <tr class="hover:bg-slate-800/30 transition">
-                            <td class="px-4 py-3 font-medium text-white"><span class="px-2.5 py-1 text-xs rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">Gestão / Orientação</span></td>
-                            <td class="px-4 py-3 text-slate-300 text-sm leading-relaxed"> Diretora de escola em Alegrete (RS); busca adquirir conhecimentos sobre direitos humanos e saúde mental para aplicar no convívio diário com a comunidade escolar.</td>
-                        </tr>
-                        <tr class="hover:bg-slate-800/30 transition">
-                            <td class="px-4 py-3 font-medium text-white"><span class="px-2.5 py-1 text-xs rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">Professores / Educadores</span></td>
-                            <td class="px-4 py-3 text-slate-300 text-sm leading-relaxed"> Professor de Educação Física do Ensino Fundamental I; busca promover um ambiente acolhedor e inclusivo, esperando que o curso ofereça estratégias para o bem-estar dos alunos.</td>
-                        </tr>
-                        <tr class="hover:bg-slate-800/30 transition">
-                            <td class="px-4 py-3 font-medium text-white"><span class="px-2.5 py-1 text-xs rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">Outros / Não Especificado</span></td>
-                            <td class="px-4 py-3 text-slate-300 text-sm leading-relaxed"> Acompanha situações de vulnerabilidade social, conflitos e evasão escolar; busca uma atuação ética e interdisciplinar para garantir os direitos de crianças, adolescentes e famílias.</td>
-                        </tr>
+                        <tbody class="divide-y divide-slate-800/50" id="tableBody">
+                            <!-- Injetado via JS -->
                         </tbody>
                     </table>
                 </div>
@@ -447,164 +373,318 @@
     </main>
 
     <script>
-        // Dados estatísticos detalhados para o gráfico interativo
-        const chartDataDetailed = {
-            "Prática Pedagógica": {
-                title: "Prática Pedagógica & Ação",
-                description: "Representa a busca direta dos educadores por ferramentas práticas, metodologias ativas e estratégias de intervenção alinhadas aos direitos humanos no cotidiano escolar.",
-                value: "267 menções",
-                status: "Alto Interesse"
-            },
-            "Direitos Humanos": {
-                title: "Direitos Humanos & Cidadania",
-                description: "Enfatiza a garantia de direitos fundamentais, combate a preconceitos, respeito à diversidade e inclusão como pilares fundamentais da prática educativa.",
-                value: "251 menções",
-                status: "Pilar Central"
-            },
-            "Saúde Mental": {
-                title: "Saúde Mental & Bem-estar",
-                description: "Foca no cuidado emocional de alunos e profissionais da educação, lidando com ansiedade, esgotamento profissional e suporte psicológico na rede.",
-                value: "251 menções",
-                status: "Pilar Central"
-            },
-            "Mediação de Conflitos": {
-                title: "Mediação & Acolhimento",
-                description: "Busca por técnicas pacíficas de resolução de conflitos escolares, escuta sensível e fortalecimento de redes de apoio socioemocional.",
-                value: "135 menções",
-                status: "Relevante"
-            }
-        };
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile Menu Logic
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const closeMobileMenu = document.getElementById('closeMobileMenu');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const mobileLinks = document.querySelectorAll('.mobile-nav-link');
 
-        // Inicialização do Gráfico Dinâmico com Chart.js
-        const ctx = document.getElementById('indicatorsChart').getContext('2d');
-        const indicatorsChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['Prática Pedagógica', 'Direitos Humanos', 'Saúde Mental', 'Mediação de Conflitos'],
-                datasets: [{
-                    label: 'Número de Menções',
-                    data: [267, 251, 251, 135],
-                    backgroundColor: [
-                        'rgba(16, 185, 129, 0.8)',
-                        'rgba(99, 102, 241, 0.8)',
-                        'rgba(245, 158, 11, 0.8)',
-                        'rgba(168, 85, 247, 0.8)'
-                    ],
-                    borderColor: [
-                        'rgb(16, 185, 129)',
-                        'rgb(99, 102, 241)',
-                        'rgb(245, 158, 11)',
-                        'rgb(168, 85, 247)'
-                    ],
-                    borderRadius: 6,
-                    barThickness: 50,
-                    maxBarThickness: 58
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                        backgroundColor: 'rgba(15, 23, 42, 0.9)',
-                        titleFont: { family: 'Inter', size: 14, weight: 'bold' },
-                        bodyFont: { family: 'Inter', size: 13 },
-                        padding: 12,
-                        cornerRadius: 8,
-                        borderColor: 'rgba(255, 255, 255, 0.1)',
-                        borderWidth: 1
+            if(mobileMenuBtn && closeMobileMenu && mobileMenu) {
+                mobileMenuBtn.addEventListener('click', () => {
+                    mobileMenu.classList.remove('hidden');
+                    mobileMenu.classList.add('flex');
+                });
+
+                closeMobileMenu.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                    mobileMenu.classList.remove('flex');
+                });
+
+                mobileLinks.forEach(link => {
+                    link.addEventListener('click', () => {
+                        mobileMenu.classList.add('hidden');
+                        mobileMenu.classList.remove('flex');
+                    });
+                });
+            }
+
+            // Sincronização da barra lateral e rolagem
+            const navLinks = document.querySelectorAll('.nav-link, .mobile-nav-link');
+            const sections = ['graficos', 'termometro', 'sintese-ebook', 'tabela-respostas'];
+            const mainContainer = document.getElementById('mainContainer');
+
+            function setActiveNav(targetId) {
+                navLinks.forEach(link => {
+                    const target = link.getAttribute('data-target');
+                    if (target === targetId) {
+                        link.classList.remove('text-slate-400', 'hover:text-slate-200', 'hover:bg-slate-800/50');
+                        link.classList.add('bg-indigo-600/10', 'text-indigo-400', 'border', 'border-indigo-500/20');
+                    } else {
+                        link.classList.remove('bg-indigo-600/10', 'text-indigo-400', 'border', 'border-indigo-500/20');
+                        link.classList.add('text-slate-400', 'hover:text-slate-200', 'hover:bg-slate-800/50');
                     }
+                });
+            }
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    const targetId = this.getAttribute('data-target');
+                    if (targetId) {
+                        setActiveNav(targetId);
+                    }
+                });
+            });
+
+            // Intersection Observer para atualizar o menu ao rolar a página
+            const observerOptions = {
+                root: mainContainer,
+                rootMargin: '-20% 0px -60% 0px',
+                threshold: 0
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.getAttribute('id');
+                        setActiveNav(id);
+                    }
+                });
+            }, observerOptions);
+
+            sections.forEach(secId => {
+                const el = document.getElementById(secId);
+                if (el) observer.observe(el);
+            });
+
+            // Chart Data & Detailed Descriptions
+            const chartDataDetailed = {
+                "Formação e Prática": {
+                    description: "Busca constante por aprimoramento metodológico, didática ativa e ferramentas práticas para o cotidiano escolar. Os cursistas enfatizam a necessidade de renovar estratégias de ensino, engajar estudantes apáticos e transformar o conhecimento teórico em intervenções pedagógicas significativas e humanizadas.",
+                    tags: ["Prática Pedagógica", "Formação Continuada", "Didática"]
                 },
-                scales: {
-                    x: {
-                        grid: { display: false },
-                        ticks: { color: '#94a3b8', font: { family: 'Inter', size: 11 } }
-                    },
-                    y: {
-                        grid: { color: 'rgba(255, 255, 255, 0.05)' },
-                        ticks: { color: '#94a3b8', font: { family: 'Inter', size: 11 } }
-                    }
+                "Inclusão e Acolhimento": {
+                    description: "Forte ênfase na escuta sensível, respeito inegociável à diversidade (autismo, altas habilidades, questões étnico-raciais e vulnerabilidades sociais) e na criação de espaços seguros, livres de preconceitos e coerentes com os princípios dos Direitos Humanos na escola pública.",
+                    tags: ["Direitos Humanos", "Educação Especial", "Empatia"]
                 },
-                onHover: (event, chartElement) => {
-                    if (chartElement.length > 0) {
-                        const index = chartElement[0].index;
-                        const label = indicatorsChart.data.labels[index];
-                        updateAnalysisPanel(label);
-                    }
+                "Saúde Mental": {
+                    description: "Preocupação latente com o próprio bem-estar emocional, relatos recorrentes de esgotamento, sobrecarga burocrática, síndrome de burnout e busca urgente por equilíbrio entre a intensa rotina profissional, o autocuidado e a preservação da integridade psicológica.",
+                    tags: ["Prevenção Burnout", "Qualidade de Vida", "Saúde Docente"]
+                },
+                "Estabilidade/Carreira": {
+                    description: "Objetivos práticos focados na aprovação em concursos públicos, segurança financeira, conclusão de pós-graduação stricto sensu (mestrado e doutorado), valorização profissional e busca por planos de carreira mais justos e estáveis.",
+                    tags: ["Concurso Público", "Pós-graduação", "Ascensão Profissional"]
                 }
+            };
+
+            const ctx = document.getElementById('indicatorsChart');
+            let indicatorsChart = null;
+            if (ctx) {
+                indicatorsChart = new Chart(ctx.getContext('2d'), {
+                    type: 'bar',
+                    data: {
+                        labels: ['Formação e Prática', 'Inclusão e Acolhimento', 'Saúde Mental', 'Estabilidade/Carreira'],
+                        datasets: [{
+                            label: 'Frequência Temática Relativa (%)',
+                            data: [42, 35, 23, 18],
+                            backgroundColor: [
+                                'rgba(16, 185, 129, 0.7)',
+                                'rgba(245, 158, 11, 0.7)',
+                                'rgba(244, 63, 94, 0.7)',
+                                'rgba(99, 102, 241, 0.7)'
+                            ],
+                            borderColor: [
+                                'rgb(16, 185, 129)',
+                                'rgb(245, 158, 11)',
+                                'rgb(244, 63, 94)',
+                                'rgb(99, 102, 241)'
+                            ],
+                            borderWidth: 1,
+                            borderRadius: 4,
+                            barPercentage: 0.6
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                backgroundColor: 'rgba(15, 23, 42, 0.95)',
+                                titleFont: { family: 'Inter', size: 13, weight: 'bold' },
+                                bodyFont: { family: 'Inter', size: 12 },
+                                padding: 10,
+                                cornerRadius: 6,
+                                borderColor: 'rgba(51, 65, 85, 0.5)',
+                                borderWidth: 1
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: { display: false },
+                                ticks: { color: '#94a3b8', font: { family: 'Inter', size: 12 } }
+                            },
+                            y: {
+                                display: true,
+                                grid: { color: 'rgba(51, 65, 85, 0.2)' },
+                                ticks: { color: '#94a3b8', font: { family: 'Inter', size: 10 } },
+                                beginAtZero: true
+                            }
+                        },
+                        onHover: (event, chartElement) => {
+                            if (chartElement.length > 0) {
+                                const index = chartElement[0].index;
+                                const label = indicatorsChart.data.labels[index];
+                                updateAnalysisPanel(label);
+                            }
+                        }
+                    }
+                });
+            }
+
+            function updateAnalysisPanel(key) {
+                const data = chartDataDetailed[key];
+                const titleEl = document.getElementById('analysisTitle');
+                const descEl = document.getElementById('analysisDescription');
+                const tagsContainer = document.getElementById('analysisTagsContainer');
+                
+                if (data && titleEl && descEl && tagsContainer) {
+                    titleEl.innerText = key;
+                    descEl.innerText = data.description;
+                    tagsContainer.innerHTML = data.tags.map(tag => `<span class="inline-block bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 text-[10px] font-medium px-2.5 py-1 rounded-lg mr-1.5 mt-1">${tag}</span>`).join('');
+                }
+            }
+
+            // --- 19 Respostas Curadas (Tópicos dos gráficos e termômetro) ---
+            const curatedResponses = [
+                {
+                    perfil: "Professores / Educadores",
+                    badgeClass: "bg-indigo-500/10 text-indigo-300 border-indigo-500/30",
+                    texto: "Busca constante por aprimoramento metodológico e práticas pedagógicas inovadoras para engajar alunos e qualificar o processo de ensino-aprendizagem na escola."
+                },
+                {
+                    perfil: "Psicologia / Serv. Social",
+                    badgeClass: "bg-emerald-500/10 text-emerald-300 border-emerald-500/30",
+                    texto: "Enfatiza a importância absoluta da saúde mental docente e do acolhimento psicológico, alertando sobre os riscos severos da síndrome de burnout e da exaustão emocional na rede pública."
+                },
+                {
+                    perfil: "Professores / Educadores",
+                    badgeClass: "bg-indigo-500/10 text-indigo-300 border-indigo-500/30",
+                    texto: "Relata forte preocupação com o aumento da indisciplina e de episódios de violência escolar, buscando ferramentas baseadas em direitos humanos para a mediação de conflitos."
+                },
+                {
+                    perfil: "Gestão / Orientação",
+                    badgeClass: "bg-amber-500/10 text-amber-300 border-amber-500/30",
+                    texto: "Aborda os impactos da desvalorização profissional e salarial da categoria, defendendo melhores condições estruturais para assegurar a permanência e dignidade dos educadores."
+                },
+                {
+                    perfil: "Professores / Educadores",
+                    badgeClass: "bg-indigo-500/10 text-indigo-300 border-indigo-500/30",
+                    texto: "Reflete sobre os desafios contemporâneos impostos pelo avanço acelerado da tecnologia e da inteligência artificial, buscando manter o vínculo humano e o pensamento crítico."
+                },
+                {
+                    perfil: "Psicologia / Serv. Social",
+                    badgeClass: "bg-emerald-500/10 text-emerald-300 border-emerald-500/30",
+                    texto: "Foca sua atuação na educação inclusiva, acolhendo estudantes com deficiência e neurodivergências, combatendo preconceitos e garantindo equidade no ambiente escolar."
+                },
+                {
+                    perfil: "Professores / Educadores",
+                    badgeClass: "bg-indigo-500/10 text-indigo-300 border-indigo-500/30",
+                    texto: "Deseja superar a sobrecarga burocrática diária através de formações continuadas que valorizem a escuta sensível e o desenvolvimento socioemocional dos estudantes."
+                },
+                {
+                    perfil: "Outros / Não Especificado",
+                    badgeClass: "bg-purple-500/10 text-purple-300 border-purple-500/30",
+                    texto: "Busca estabilidade profissional por meio de aprovação em concursos públicos, conciliando o crescimento na carreira com a preservação da saúde física e mental."
+                },
+                {
+                    perfil: "Professores / Educadores",
+                    badgeClass: "bg-indigo-500/10 text-indigo-300 border-indigo-500/30",
+                    texto: "Aponta a necessidade urgente de parcerias efetivas entre família e escola voltadas à preservação da saúde mental da comunidade escolar frente às pressões modernas."
+                },
+                {
+                    perfil: "Psicologia / Serv. Social",
+                    badgeClass: "bg-emerald-500/10 text-emerald-300 border-emerald-500/30",
+                    texto: "Atua na articulação entre direitos humanos e saúde pública, buscando qualificar intervenções voltadas à garantia de direitos e ao suporte a populações vulneráveis."
+                },
+                {
+                    perfil: "Gestão / Orientação",
+                    badgeClass: "bg-amber-500/10 text-amber-300 border-amber-500/30",
+                    texto: "Gestor escolar que enfrenta desafios diários com o esgotamento docente e busca estratégias institucionais de liderança humanizada para promover o bem-estar coletivo."
+                },
+                {
+                    perfil: "Professores / Educadores",
+                    badgeClass: "bg-indigo-500/10 text-indigo-300 border-indigo-500/30",
+                    texto: "Destaca a urgência de superar métodos tradicionais excludentes, adotando uma didática integradora que respeite as pluralidades e as diferenças em sala de aula."
+                },
+                {
+                    perfil: "Outros / Não Especificado",
+                    badgeClass: "bg-purple-500/10 text-purple-300 border-purple-500/30",
+                    texto: "Planeja ingressar em programas de pós-graduação stricto sensu (mestrado) para aprofundar pesquisas na intersecção entre educação, políticas públicas e direitos humanos."
+                },
+                {
+                    perfil: "Professores / Educadores",
+                    badgeClass: "bg-indigo-500/10 text-indigo-300 border-indigo-500/30",
+                    texto: "Enfrenta barreiras relacionadas à falta de recursos estruturais básicos na rede pública, transformando a resiliência diária em compromisso com a transformação social."
+                },
+                {
+                    perfil: "Psicologia / Serv. Social",
+                    badgeClass: "bg-emerald-500/10 text-emerald-300 border-emerald-500/30",
+                    texto: "Conduz grupos de apoio psicológico escolar focados em técnicas de regulação emocional, relaxamento e prevenção ativa ao estresse e à ansiedade."
+                },
+                {
+                    perfil: "Professores / Educadores",
+                    badgeClass: "bg-indigo-500/10 text-indigo-300 border-indigo-500/30",
+                    texto: "Utiliza ferramentas lúdicas e projetos de direitos humanos para combater o cyberbullying e os impactos nocivos do uso excessivo de telas pelos jovens."
+                },
+                {
+                    perfil: "Gestão / Orientação",
+                    badgeClass: "bg-amber-500/10 text-amber-300 border-amber-500/30",
+                    texto: "Defende a inseparabilidade entre clima escolar saudável e sucesso pedagógico, combatendo o assédio moral e valorizando o trabalho colaborativo entre docentes."
+                },
+                {
+                    perfil: "Professores / Educadores",
+                    badgeClass: "bg-indigo-500/10 text-indigo-300 border-indigo-500/30",
+                    texto: "Busca apoio e capacitação para lidar com alunos com altas habilidades e transtornos de aprendizagem, garantindo atendimento pedagógico especializado de qualidade."
+                },
+                {
+                    perfil: "Outros / Não Especificado",
+                    badgeClass: "bg-purple-500/10 text-purple-300 border-purple-500/30",
+                    texto: "Encaram os desafios da profissão com esperança e união, fundamentando sua trajetória na ética, na empatia e na defesa intransigente de uma educação pública emancipadora."
+                }
+            ];
+
+            const tbody = document.getElementById('tableBody');
+            
+            if (tbody) {
+                curatedResponses.forEach((item, index) => {
+                    const tr = document.createElement('tr');
+                    tr.className = "hover:bg-slate-800/30 transition-colors";
+                    
+                    const identifier = `Cursista ${index + 1}`;
+                    
+                    tr.innerHTML = `
+                        <td class="px-6 py-4 align-top">
+                            <div class="font-medium text-slate-200 text-sm mb-1.5">${identifier}</div>
+                            <span class="inline-block px-2.5 py-1 text-[11px] font-medium rounded-full border ${item.badgeClass}">
+                                ${item.perfil}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 align-top border-l border-slate-800/50">
+                            <p class="text-xs text-slate-300 leading-relaxed">${item.texto}</p>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
             }
         });
 
-        function updateAnalysisPanel(key) {
-            const data = chartDataDetailed[key];
-            if (data) {
-                document.getElementById('analysisTitle').innerText = data.title;
-                document.getElementById('analysisDescription').innerText = data.description;
-                document.getElementById('analysisStatValue').innerText = data.value;
-                document.getElementById('analysisStatStatus').innerText = data.status;
-            }
-        }
-
-        // Função de filtro da tabela de respostas
-        function filterTable() {
-            const input = document.getElementById('searchInput');
-            const filter = input.value.toLowerCase();
-            const table = document.getElementById('cursistTable');
-            const tr = table.getElementsByTagName('tr');
+        // Search Functionality
+        window.filterTable = function() {
+            const input = document.getElementById("searchInput");
+            const filter = input.value.toUpperCase();
+            const table = document.getElementById("cursistTable");
+            const tr = table.getElementsByTagName("tr");
 
             for (let i = 1; i < tr.length; i++) {
-                const tdProfile = tr[i].getElementsByTagName('td')[0];
-                const tdContent = tr[i].getElementsByTagName('td')[1];
-                if (tdProfile || tdContent) {
-                    const txtProfile = tdProfile.textContent || tdProfile.innerText;
-                    const txtContent = tdContent.textContent || tdContent.innerText;
-                    if (txtProfile.toLowerCase().indexOf(filter) > -1 || txtContent.toLowerCase().indexOf(filter) > -1) {
-                        tr[i].style.display = "";
-                    } else {
-                        tr[i].style.display = "none";
-                    }
+                let textValue = tr[i].textContent || tr[i].innerText;
+                if (textValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
                 }
             }
         }
-
-        // Script robusto para atualizar o menu lateral por posição de scroll e cliques
-        const navLinks = document.querySelectorAll('.nav-link');
-        const sections = ['graficos', 'termometro', 'sintese-ebook', 'tabela-respostas'];
-
-        function setActiveMenu(activeId) {
-            navLinks.forEach(link => {
-                link.className = "nav-link flex items-center space-x-3 px-4 py-3 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 rounded-xl font-medium transition";
-            });
-            const activeLink = document.getElementById(`nav-${activeId}`);
-            if (activeLink) {
-                activeLink.className = "nav-link flex items-center space-x-3 px-4 py-3 bg-indigo-600/10 text-indigo-400 border border-indigo-500/20 rounded-xl font-medium transition";
-            }
-        }
-
-        navLinks.forEach(link => {
-            link.addEventListener('click', function() {
-                const targetId = this.getAttribute('href').substring(1);
-                setActiveMenu(targetId);
-            });
-        });
-
-        const mainContainer = document.querySelector('main');
-        mainContainer.addEventListener('scroll', () => {
-            let current = 'graficos';
-            
-            sections.forEach(sectionId => {
-                const section = document.getElementById(sectionId);
-                if (section) {
-                    const sectionTop = section.offsetTop - 200;
-                    if (mainContainer.scrollTop >= sectionTop) {
-                        current = sectionId;
-                    }
-                }
-            });
-            
-            setActiveMenu(current);
-        });
     </script>
 </body>
 </html>
