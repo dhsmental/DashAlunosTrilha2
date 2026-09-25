@@ -545,7 +545,7 @@
                 }
             }
 
-            // --- 19 Respostas Curadas (Tópicos dos gráficos e termômetro) ---
+            // --- 19 Respostas Curadas sem Contagem Numérica ---
             const curatedResponses = [
                 {
                     perfil: "Professores / Educadores",
@@ -647,16 +647,13 @@
             const tbody = document.getElementById('tableBody');
             
             if (tbody) {
-                curatedResponses.forEach((item, index) => {
+                curatedResponses.forEach((item) => {
                     const tr = document.createElement('tr');
                     tr.className = "hover:bg-slate-800/30 transition-colors";
                     
-                    const identifier = `Cursista ${index + 1}`;
-                    
                     tr.innerHTML = `
                         <td class="px-6 py-4 align-top">
-                            <div class="font-medium text-slate-200 text-sm mb-1.5">${identifier}</div>
-                            <span class="inline-block px-2.5 py-1 text-[11px] font-medium rounded-full border ${item.badgeClass}">
+                            <span class="inline-block px-3 py-1.5 text-xs font-semibold rounded-full border ${item.badgeClass}">
                                 ${item.perfil}
                             </span>
                         </td>
